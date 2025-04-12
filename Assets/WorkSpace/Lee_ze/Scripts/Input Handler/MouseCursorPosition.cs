@@ -10,11 +10,25 @@ public class MouseCursorPosition : MonoBehaviour
 {
     public event Action OnDirectionChanged;
 
+    [SerializeField]
+    private Transform mousePosInit; // 플레이어 프리팹 넣어서 초기 hit.point 위치 정해줌
+
     private Ray ray;
 
     public RaycastHit hit;
 
+    private Vector3 previousHitPoint;
+
     private bool isMouseRightHeld = false;
+
+    private int floorLayerMask;
+
+    private void Start()
+    {
+        floorLayerMask = LayerMask.GetMask("FLOOR");
+
+        previousHitPoint = mousePosInit.position;
+    }
 
     private void Update()
     {
@@ -26,12 +40,10 @@ public class MouseCursorPosition : MonoBehaviour
         if (ctx.phase == InputActionPhase.Started)
         {
             isMouseRightHeld = true;
-            Debug.Log("누름");
         }
         else if (ctx.phase == InputActionPhase.Canceled)
         {
             isMouseRightHeld = false;
-            Debug.Log("땜");
         }
     }
 
@@ -40,15 +52,18 @@ public class MouseCursorPosition : MonoBehaviour
     {
         if (isMouseRightHeld == true)
         {
-            Debug.Log(1);
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(ray, out hit, 100, floorLayerMask))
             {
                 Debug.DrawLine(ray.origin, hit.point, Color.green);
 
-                OnDirectionChanged?.Invoke();
-                Debug.Log("invoked");
+                if (previousHitPoint != hit.point)
+                {
+                    previousHitPoint = hit.point;
+
+                    OnDirectionChanged?.Invoke();
+                }
             }
         }
     }
