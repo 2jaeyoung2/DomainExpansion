@@ -10,14 +10,11 @@ public class MouseCursorPosition : MonoBehaviour
 {
     public event Action OnDirectionChanged;
 
-    [SerializeField]
-    private Transform mousePosInit; // 플레이어 프리팹 넣어서 초기 hit.point 위치 정해줌
-
     private Ray ray;
 
     public RaycastHit hit;
 
-    private Vector3 previousHitPoint;
+    public Vector3 previousHitPoint;
 
     private bool isMouseRightHeld = false;
 
@@ -26,8 +23,6 @@ public class MouseCursorPosition : MonoBehaviour
     private void Start()
     {
         floorLayerMask = LayerMask.GetMask("FLOOR");
-
-        previousHitPoint = mousePosInit.position;
     }
 
     private void Update()

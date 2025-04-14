@@ -3,22 +3,39 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
-    [SerializeField]
-    private MouseCursorPosition mousePos;
+    public MouseCursorPosition mousePos;
 
-    [SerializeField]
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
+
+    private IPlayerState currentState;
 
     private void Start()
     {
         PlayerMovementSettings();
 
         mousePos.OnDirectionChanged += GoToDestination;
+
+        // Idle State로 초기화
+        ChangeStateTo(new IdleState());
     }
 
-    public void GoToDestination()
+    private void Update()
+    {
+        currentState?.UpdateState();
+    }
+
+    public void ChangeStateTo(IPlayerState nextState)
+    {
+        currentState?.ExitState();
+
+        currentState = nextState;
+
+        currentState.EnterState(this);
+    }
+
+    private void GoToDestination()
     {
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f)
         {

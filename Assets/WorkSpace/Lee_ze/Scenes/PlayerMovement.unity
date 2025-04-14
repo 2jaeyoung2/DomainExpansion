@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dedba2c9a9eb0849921d6a7736bf008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mousePosInit: {fileID: 6271034808478072625}
+  previousHitPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &110842127
 Transform:
   m_ObjectHideFlags: 0
@@ -1914,8 +1914,8 @@ GameObject:
   - component: {fileID: 4380784599522388117}
   - component: {fileID: 6271034808478072626}
   - component: {fileID: 6271034808478072627}
-  - component: {fileID: 6271034808478072629}
   - component: {fileID: 6271034808478072628}
+  - component: {fileID: 6271034808478072629}
   m_Layer: 0
   m_Name: Dwarf_Soldier_WeaponScale2
   m_TagString: Untagged
@@ -2739,7 +2739,7 @@ GameObject:
   - component: {fileID: 6113114126911992859}
   - component: {fileID: 3598876503858120119}
   - component: {fileID: 5816093090990265040}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Rune Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3032,7 +3032,7 @@ GameObject:
   - component: {fileID: 5255093517608000751}
   - component: {fileID: 463615876495016415}
   - component: {fileID: 3428726285999692469}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Rune Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3631,7 +3631,7 @@ GameObject:
   - component: {fileID: 6388426427710524144}
   - component: {fileID: 1104054995452340932}
   - component: {fileID: 5112938387226383251}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Rune Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
