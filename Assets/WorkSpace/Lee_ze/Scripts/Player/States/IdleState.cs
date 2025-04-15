@@ -10,8 +10,6 @@ public class IdleState : IPlayerState
     public void EnterState(PlayerControl player)
     {
         this.player = player;
-
-        Debug.Log("IdleStart");
     }
 
     public void UpdateState()
@@ -24,6 +22,6 @@ public class IdleState : IPlayerState
 
     public void ExitState()
     {
-        Debug.Log("IdleEnd");
+
     }
 }

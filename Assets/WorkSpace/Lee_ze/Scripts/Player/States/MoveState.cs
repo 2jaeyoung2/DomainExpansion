@@ -11,8 +11,6 @@ public class MoveState : IPlayerState
         this.player = player;
 
         player.playerAnim.SetBool("IsMove", true);
-
-        Debug.Log("MoveStart");
     }
 
     public void UpdateState()
@@ -26,7 +24,5 @@ public class MoveState : IPlayerState
     public void ExitState()
     {
         player.playerAnim.SetBool("IsMove", false);
-
-        Debug.Log("MoveEnd");
     }
 }
