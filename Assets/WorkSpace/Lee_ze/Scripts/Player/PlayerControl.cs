@@ -11,6 +11,8 @@ public class PlayerControl : MonoBehaviour
 
     private IPlayerState currentState;
 
+    public Animator playerAnim;
+
     private void Start()
     {
         PlayerMovementSettings();
@@ -35,10 +37,13 @@ public class PlayerControl : MonoBehaviour
         currentState.EnterState(this);
     }
 
+    #region MoveMents
     private void GoToDestination()
     {
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f)
         {
+            SetPlayerRotation();
+
             agent.SetDestination(mousePos.hit.point);
         }
     }
@@ -51,8 +56,18 @@ public class PlayerControl : MonoBehaviour
 
         agent.angularSpeed = 999f;
 
-        agent.speed = 10f;
+        agent.speed = 8f;
     }
+
+    private void SetPlayerRotation()
+    {
+        Vector3 targetPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
+
+        Vector3 direction = (targetPos - transform.position).normalized;
+
+        transform.rotation = Quaternion.LookRotation(direction);
+    }
+    #endregion
 
     private void OnDisable()
     {

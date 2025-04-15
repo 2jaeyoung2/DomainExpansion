@@ -10,19 +10,23 @@ public class MoveState : IPlayerState
     {
         this.player = player;
 
+        player.playerAnim.SetBool("IsMove", true);
+
         Debug.Log("MoveStart");
     }
 
     public void UpdateState()
     {
-        if (player.agent.isStopped == true)
+        if (player.agent.velocity.magnitude < 0.1f)
         {
-            player.ChangeStateTo(new MoveState());
+            player.ChangeStateTo(new IdleState());
         }
     }
 
     public void ExitState()
     {
+        player.playerAnim.SetBool("IsMove", false);
+
         Debug.Log("MoveEnd");
     }
 }

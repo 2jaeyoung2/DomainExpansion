@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics.Internal;
 using UnityEngine;
 
 public class IdleState : IPlayerState
@@ -11,13 +12,11 @@ public class IdleState : IPlayerState
         this.player = player;
 
         Debug.Log("IdleStart");
-
-        Debug.Log(player.agent.isStopped);
     }
 
     public void UpdateState()
     {
-        if (player.agent.isStopped == false)
+        if (player.agent.velocity.magnitude > 0.1f)
         {
             player.ChangeStateTo(new MoveState());
         }
