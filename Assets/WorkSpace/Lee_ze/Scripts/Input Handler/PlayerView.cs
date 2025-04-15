@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraEdgeScroll : MonoBehaviour
+public class PlayerView : MonoBehaviour
 {
     public float scrollSpeed = 15f;
 
@@ -21,7 +21,7 @@ public class CameraEdgeScroll : MonoBehaviour
 
     private float targetZoom;
 
-    private float zoomVelocity = 0.0f;
+    private float zoomVelocity = 0f;
 
     void Start()
     {

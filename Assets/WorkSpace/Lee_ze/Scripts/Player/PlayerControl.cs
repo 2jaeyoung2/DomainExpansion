@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -37,16 +38,7 @@ public class PlayerControl : MonoBehaviour
         currentState.EnterState(this);
     }
 
-    #region MoveMents
-    private void GoToDestination()
-    {
-        if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f)
-        {
-            SetPlayerRotation();
-
-            agent.SetDestination(mousePos.hit.point);
-        }
-    }
+    #region MoveMents 이동 관련 스크립트
 
     private void PlayerMovementSettings()
     {
@@ -59,7 +51,17 @@ public class PlayerControl : MonoBehaviour
         agent.speed = 8f;
     }
 
-    private void SetPlayerRotation()
+    private void GoToDestination() // 마우스 우클릭 할 때 호출 됨(observer pattern 사용)
+    {
+        if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f)
+        {
+            SetPlayerRotation();
+
+            agent.SetDestination(mousePos.hit.point);
+        }
+    }
+
+    private void SetPlayerRotation() // 이동하는 방향으로 rotate
     {
         Vector3 targetPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
 
@@ -67,6 +69,17 @@ public class PlayerControl : MonoBehaviour
 
         transform.rotation = Quaternion.LookRotation(direction);
     }
+
+    public void OnStop(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Started)
+        {
+            agent.isStopped = true;
+
+            agent.ResetPath();
+        }
+    }
+
     #endregion
 
     private void OnDisable()
