@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Services.Analytics.Internal;
 using UnityEngine;
 
 public class IdleState : IPlayerState
@@ -10,13 +9,24 @@ public class IdleState : IPlayerState
     public void EnterState(PlayerControl player)
     {
         this.player = player;
+
+        this.player.isMoving = false;
+
+        player.playerAnim.SetBool("IsMove", false);
     }
 
     public void UpdateState()
     {
+
+
+        // ----> State Change
+        if (player.isDash == true)
+        {
+            player.ChangeStateTo(new DashState());
+        }
         if (player.agent.velocity.magnitude > 0.1f)
         {
-            player.ChangeStateTo(new MoveState());
+            player.ChangeStateTo(new RunState());
         }
     }
 

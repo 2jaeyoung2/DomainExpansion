@@ -1915,6 +1915,7 @@ GameObject:
   - component: {fileID: 4380784599522388117}
   - component: {fileID: 6271034808478072626}
   - component: {fileID: 6271034808478072627}
+  - component: {fileID: 6271034808478072630}
   - component: {fileID: 6271034808478072628}
   - component: {fileID: 6271034808478072629}
   m_Layer: 0
@@ -3847,6 +3848,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e9a5314e-c9cc-4ce7-aad4-cd7aa11922dd
     m_ActionName: PlayerMoves/Stop[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6271034808478072629}
+        m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4289be60-caa5-4e1a-905b-5af47b0131da
+    m_ActionName: PlayerMoves/Dash[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMoves
@@ -3915,7 +3932,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mousePos: {fileID: 110842126}
   agent: {fileID: 6271034808478072627}
+  playerCollider: {fileID: 6271034808478072630}
   playerAnim: {fileID: 4380784599522388117}
+  isDash: 0
+--- !u!136 &6271034808478072630
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2980892404204314432}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.34
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &6297252036961421499
 Transform:
   m_ObjectHideFlags: 0

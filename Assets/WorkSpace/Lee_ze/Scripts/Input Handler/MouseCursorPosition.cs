@@ -16,7 +16,7 @@ public class MouseCursorPosition : MonoBehaviour
 
     public Vector3 previousHitPoint;
 
-    private bool isMouseRightHeld = false;
+    public bool isRayOn = false;
 
     private int floorLayerMask;
 
@@ -30,22 +30,22 @@ public class MouseCursorPosition : MonoBehaviour
         GetMouseCursorPosition();
     }
 
-    public void OnMouseRightButtonClick(InputAction.CallbackContext ctx)
+    public void OnMouseRightButtonClick(InputAction.CallbackContext ctx) // '마우스 우클릭' 바인딩
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            isMouseRightHeld = true;
+            isRayOn = true;
         }
         else if (ctx.phase == InputActionPhase.Canceled)
         {
-            isMouseRightHeld = false;
+            isRayOn = false;
         }
     }
 
     // 마우스 커서 위치 가져오기. ※ hit.point로 커서 좌표 가져올 수 있음.
     private void GetMouseCursorPosition()
     {
-        if (isMouseRightHeld == true)
+        if (isRayOn == true)
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -60,6 +60,16 @@ public class MouseCursorPosition : MonoBehaviour
                     OnDirectionChanged?.Invoke();
                 }
             }
+        }
+    }
+
+    public void TempGetMouseCursorPosition()
+    {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, 100, floorLayerMask))
+        {
+            Debug.DrawLine(ray.origin, hit.point, Color.green);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveState : IPlayerState
+public class RunState : IPlayerState
 {
     private PlayerControl player;
 
@@ -10,11 +10,20 @@ public class MoveState : IPlayerState
     {
         this.player = player;
 
+        this.player.isMoving = true;
+
         player.playerAnim.SetBool("IsMove", true);
     }
 
     public void UpdateState()
     {
+
+
+        // ----> State Change
+        if (player.isDash == true)
+        {
+            player.ChangeStateTo(new DashState());
+        }
         if (player.agent.velocity.magnitude < 0.1f)
         {
             player.ChangeStateTo(new IdleState());
@@ -23,6 +32,6 @@ public class MoveState : IPlayerState
 
     public void ExitState()
     {
-        player.playerAnim.SetBool("IsMove", false);
+        player.isMoving = false;
     }
 }
