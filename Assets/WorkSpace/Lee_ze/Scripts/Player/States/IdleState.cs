@@ -12,7 +12,7 @@ public class IdleState : IPlayerState
 
         this.player.isMoving = false;
 
-        player.playerAnim.SetBool("IsMove", false);
+        player.playerAnim.SetBool("IsRun", false);
     }
 
     public void UpdateState()

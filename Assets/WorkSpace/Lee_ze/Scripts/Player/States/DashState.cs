@@ -42,11 +42,11 @@ public class DashState : IPlayerState
     {
         if (player.isMoving == false)
         {
-            player.playerAnim.SetBool("IsMove", false);
+            player.playerAnim.SetBool("IsRun", false);
         }
         else if (player.isMoving == true)
         {
-            player.playerAnim.SetBool("IsMove", true);
+            player.playerAnim.SetBool("IsRun", true);
         }
 
         player.playerCollider.enabled = true; // 콜라이더 켜기

@@ -12,7 +12,7 @@ public class RunState : IPlayerState
 
         this.player.isMoving = true;
 
-        player.playerAnim.SetBool("IsMove", true);
+        player.playerAnim.SetBool("IsRun", true);
     }
 
     public void UpdateState()
