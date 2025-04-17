@@ -17,13 +17,14 @@ public class PlayerControl : MonoBehaviour
 
     public Animator playerAnim;
 
+    public PlayerAttack attackCheck;
 
 
     Vector3 targetPos;
 
     Vector3 direction;
 
-    public bool isMoving = false;
+    public bool isCancled = false;
 
     public bool isDash = false;
 
@@ -65,11 +66,17 @@ public class PlayerControl : MonoBehaviour
 
     private void GoToDestination() // 마우스 우클릭 할 때 호출 됨(observer pattern 사용)
     {
-        if (isDash == true)
+        if (isDash == true) // 구르기 중일 때 이동 불가
         {
             return;
         }
-        if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f)
+
+        if (attackCheck.isAttack == true) // 공격 중일 때 이동 불가
+        {
+            return;
+        }
+
+        if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f) // agent의 목적지와 마우스 우클릭 위치 차이가 0.1보다 클 경우
         {
             SetPlayerRotation();
 
@@ -90,9 +97,16 @@ public class PlayerControl : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            agent.isStopped = true;
+            isCancled = true;
 
             agent.ResetPath();
+        }
+
+        if (ctx.phase == InputActionPhase.Canceled)
+        {
+            attackCheck.isAttack = false;
+
+            isCancled = false;
         }
     }
 
@@ -110,8 +124,6 @@ public class PlayerControl : MonoBehaviour
 
     public IEnumerator Dash()
     {
-        agent.ResetPath();
-
         mousePos.TempGetMouseCursorPosition();
 
         SetPlayerRotation();

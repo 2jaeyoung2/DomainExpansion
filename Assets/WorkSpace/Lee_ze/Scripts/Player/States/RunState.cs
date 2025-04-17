@@ -10,9 +10,9 @@ public class RunState : IPlayerState
     {
         this.player = player;
 
-        this.player.isMoving = true;
-
         player.playerAnim.SetBool("IsRun", true);
+
+        Debug.Log("run start");
     }
 
     public void UpdateState()
@@ -23,15 +23,27 @@ public class RunState : IPlayerState
         if (player.isDash == true)
         {
             player.ChangeStateTo(new DashState());
+
+            return;
         }
-        if (player.agent.velocity.magnitude < 0.1f)
+
+        if (player.attackCheck.isAttack == true)
+        {
+            player.ChangeStateTo(new AttackState());
+
+            return;
+        }
+
+        if (player.agent.hasPath == false)
         {
             player.ChangeStateTo(new IdleState());
+
+            return;
         }
     }
 
     public void ExitState()
     {
-        player.isMoving = false;
+        Debug.Log("run end");
     }
 }

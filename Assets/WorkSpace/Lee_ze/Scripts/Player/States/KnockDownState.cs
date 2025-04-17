@@ -9,6 +9,8 @@ public class KnockDownState : IPlayerState
     public void EnterState(PlayerControl player)
     {
         this.player = player;
+
+        Debug.Log("knockdown start");
     }
 
     public void UpdateState()
@@ -18,6 +20,6 @@ public class KnockDownState : IPlayerState
 
     public void ExitState()
     {
-
+        Debug.Log("knockdown end");
     }
 }

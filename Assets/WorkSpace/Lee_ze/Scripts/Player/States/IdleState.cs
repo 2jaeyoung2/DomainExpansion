@@ -10,9 +10,11 @@ public class IdleState : IPlayerState
     {
         this.player = player;
 
-        this.player.isMoving = false;
-
         player.playerAnim.SetBool("IsRun", false);
+
+        Debug.Log(this.player.isDash);
+
+        Debug.Log("idle start");
     }
 
     public void UpdateState()
@@ -23,15 +25,27 @@ public class IdleState : IPlayerState
         if (player.isDash == true)
         {
             player.ChangeStateTo(new DashState());
+
+            return;
         }
-        if (player.agent.velocity.magnitude > 0.1f)
+
+        if (player.attackCheck.isAttack == true) // АјАн state
+        {
+            player.ChangeStateTo(new AttackState());
+
+            return;
+        }
+
+        if (player.agent.hasPath == true)
         {
             player.ChangeStateTo(new RunState());
+
+            return;
         }
     }
 
     public void ExitState()
     {
-
+        Debug.Log("idle end");
     }
 }

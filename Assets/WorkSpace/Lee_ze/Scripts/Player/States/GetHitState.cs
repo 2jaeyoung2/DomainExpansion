@@ -9,6 +9,8 @@ public class GetHitState : IPlayerState
     public void EnterState(PlayerControl player)
     {
         this.player = player;
+
+        Debug.Log("gethit start");
     }
 
     public void UpdateState()
@@ -18,6 +20,6 @@ public class GetHitState : IPlayerState
 
     public void ExitState()
     {
-
+        Debug.Log("gethit end");
     }
 }
