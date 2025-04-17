@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public struct TileInfo
@@ -23,6 +24,8 @@ public struct TileInfo
 
 public class MapMaker : MonoBehaviour
 {
+    [SerializeField] NavMeshSurface surface;
+
     [Header("Objects")]
     [SerializeField][Tooltip("바닥 타일")] GameObject baseObj;
     [SerializeField][Tooltip("시작점 Transform")] Transform startPos;
@@ -47,6 +50,7 @@ public class MapMaker : MonoBehaviour
     Ray ray;
     RaycastHit hit;
     Vector3 placeRot = new Vector3(0, 15, 0); //회전간격
+
     // Start is called before the first frame update
     void Start()
     {
@@ -147,7 +151,6 @@ public class MapMaker : MonoBehaviour
                         Debug.Log(hit.transform.name);
                         if (int.TryParse(hit.transform.name, out int num))
                         {
-                            Debug.Log(num + " " + tileList[num]);
                             tileList[num] = new TileInfo(selected + 1, placed.transform.eulerAngles);
                         }
                     }
@@ -185,6 +188,7 @@ public class MapMaker : MonoBehaviour
             baseTile.name = i.ToString();
             baseTile.transform.parent = startPos;
         }
+        surface.BuildNavMesh();
     }
 
     public void DeleteTiles() //설치된 타일 제거
@@ -200,6 +204,7 @@ public class MapMaker : MonoBehaviour
 
     public void MakeMap() //저장된 타일 불러오기
     {
+        DeleteTiles();
         Debug.Log("MakeMap");
         for (int i = 0; i < tileList.Length; i++)
         {

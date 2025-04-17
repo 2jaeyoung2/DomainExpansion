@@ -319,6 +319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2071416033}
   - component: {fileID: 2071416032}
+  - component: {fileID: 2071416034}
   m_Layer: 0
   m_Name: StartPoint
   m_TagString: Untagged
@@ -338,13 +339,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3daa54fda72b024b87e8652daabdcb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surface: {fileID: 2071416034}
   baseObj: {fileID: 7510867209351889630, guid: ca660ceedc9cf574caafc9271c3f7c76, type: 3}
-  basePos: {fileID: 2071416033}
+  startPos: {fileID: 2071416033}
   tiles:
   - {fileID: 4777582404965281116, guid: 1f43268024f0df44694215712889dbb4, type: 3}
   - {fileID: 4110593186236076856, guid: f48f6f91c381bbc4982963a921c9d28b, type: 3}
   - {fileID: 4058874113279570379, guid: 28e7f9fc5bfe1b94fb5c45cc98cdfddd, type: 3}
   - {fileID: 2061766254730465044, guid: 0b9df5b1726186946847b89446a01c72, type: 3}
+  placingTiles: []
   canPlaceMat: {fileID: 2100000, guid: 2989e94dddd9aa7449c49ff4402a0420, type: 2}
   cannotPlaceMat: {fileID: 2100000, guid: 4a688e88f3a4df14691f263c3dbe14a3, type: 2}
   hor: 5
@@ -352,7 +355,6 @@ MonoBehaviour:
   dist: 1
   placeMode: 0
   canPlace: 0
-  placingTiles: []
   selected: 0
 --- !u!4 &2071416033
 Transform:
@@ -369,6 +371,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2071416034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071416031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
