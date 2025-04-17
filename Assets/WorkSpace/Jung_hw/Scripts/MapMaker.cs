@@ -120,7 +120,7 @@ public class MapMaker : MonoBehaviour
                 if (hit.transform.GetChild(0).childCount == 0) //이미 설치된 타일이 없으면?
                 {
                     canPlace = true;
-                    if (placingTiles[selected].TryGetComponent<MeshRenderer>(out MeshRenderer mesh))
+                    if (placingTiles[selected].transform.GetChild(0).TryGetComponent<MeshRenderer>(out MeshRenderer mesh))
                     {
                         mesh.material = canPlaceMat;
                     }
@@ -128,7 +128,7 @@ public class MapMaker : MonoBehaviour
                 else
                 {
                     canPlace = false;
-                    if (placingTiles[selected].TryGetComponent<MeshRenderer>(out MeshRenderer mesh))
+                    if (placingTiles[selected].transform.GetChild(0).TryGetComponent<MeshRenderer>(out MeshRenderer mesh))
                     {
                         mesh.material = cannotPlaceMat;
                     }
