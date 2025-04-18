@@ -25,6 +25,7 @@ public struct TileInfo
 public class MapMaker : MonoBehaviour
 {
     [SerializeField] NavMeshSurface surface;
+    [SerializeField] bool isRight; //오른쪽 맵인지
 
     [Header("Objects")]
     [SerializeField][Tooltip("바닥 타일")] GameObject baseObj;
@@ -42,6 +43,9 @@ public class MapMaker : MonoBehaviour
     [SerializeField][Tooltip("간격(길이)")] float dist;
 
     [Header("for Test")]
+    [SerializeField] float playFallTime;
+    [SerializeField] float fallingTime;
+    [SerializeField] int fallHeight;
     [SerializeField] bool placeMode = false;
     [SerializeField] bool canPlace = false;
     [SerializeField][Tooltip("현재 선택한 타일 인덱스")] int selected = 0;
@@ -52,7 +56,7 @@ public class MapMaker : MonoBehaviour
     Vector3 placeRot = new Vector3(0, 15, 0); //회전간격
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         placingTiles = new List<GameObject>();
         tileList = new TileInfo[hor * ver];
@@ -74,6 +78,10 @@ public class MapMaker : MonoBehaviour
         {
             placeMode = !placeMode;
             placingTiles[selected]?.SetActive(placeMode);
+        }
+        if (Input.GetKeyDown(KeyCode.R)) //모든 타일 삭제
+        {
+            RandomGenerator();
         }
 
         if (Input.GetKeyDown(KeyCode.D)) //모든 타일 삭제
@@ -188,6 +196,11 @@ public class MapMaker : MonoBehaviour
             baseTile.name = i.ToString();
             baseTile.transform.parent = startPos;
         }
+        //마주보게 만들기
+        if (isRight)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
         surface.BuildNavMesh();
     }
 
@@ -211,7 +224,66 @@ public class MapMaker : MonoBehaviour
             if (tileList[i].TileId != 0)
             {
                 Instantiate(tiles[tileList[i].TileId - 1], startPos.transform.GetChild(i).GetChild(0)).transform.rotation = Quaternion.Euler(tileList[i].TileRot);
+                Vector3 height = new Vector3(0, fallHeight, 0);
+                if (startPos.GetChild(i).GetChild(0).childCount > 0)
+                {
+                    startPos.GetChild(i).GetChild(0).GetChild(0).transform.localPosition += height;
+                }
             }
         }
+        StartCoroutine(PlayTileFall());
+    }
+
+    IEnumerator PlayTileFall()
+    {
+        WaitForSeconds wait = new WaitForSeconds(playFallTime / tileList.Length);
+        for (int i = 0; i < tileList.Length; i++)
+        {
+            if (startPos.GetChild(i).GetChild(0).childCount > 0)
+            {
+                StartCoroutine(FallTile(startPos.GetChild(i).GetChild(0).GetChild(0).gameObject));
+            }
+            yield return wait;
+        }
+    }
+
+    IEnumerator FallTile(GameObject fallingObj)
+    {
+        float tick = Time.deltaTime;
+        float moveAmount = fallingObj.transform.localPosition.y / (fallingTime / tick);
+        Vector3 moveVec = new Vector3(0, moveAmount, 0);
+        WaitForSeconds wait = new WaitForSeconds(tick);
+
+        while (fallingObj.transform.localPosition.y > 0)
+        {
+            fallingObj.transform.localPosition -= moveVec;
+            yield return wait;
+        }
+        fallingObj.transform.localPosition = Vector3.zero;
+    }
+
+    public void RandomTile()
+    {
+        for (int i = 0; i < tileList.Length; i++)
+        {
+            Vector3 rot = new Vector3(0, Random.Range(0f, 360f), 0);
+            int tileNum = Random.Range(0, tiles.Count + 1);
+            if (tileNum == 0)
+            {
+                tileList[i] = new TileInfo(tileNum, Vector3.zero);
+            }
+            else
+            {
+                tileList[i] = new TileInfo(tileNum, tiles[tileNum - 1].transform.eulerAngles + rot);
+            }
+        }
+    }
+
+    public void RandomGenerator()
+    {
+        DeleteTiles();
+        RandomTile();
+        MakeMap();
+        surface.BuildNavMesh();
     }
 }

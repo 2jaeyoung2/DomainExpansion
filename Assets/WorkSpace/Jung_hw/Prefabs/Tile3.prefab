@@ -112,7 +112,7 @@ NavMeshObstacle:
   m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 2.5, z: 0}
-  m_TimeToStationary: 100000000
+  m_TimeToStationary: 1
 --- !u!4 &3572857433245813484 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4525269901261707659, guid: 954ee7381fa837945b9ff27165784579, type: 3}

@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8037988382747082826, guid: d82db158d74edcd4bb88364e57a6ab34, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8037988382747082826, guid: d82db158d74edcd4bb88364e57a6ab34, type: 3}
       propertyPath: m_LocalPosition.z
@@ -117,4 +117,4 @@ NavMeshObstacle:
   m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: -2.5, y: 1.25, z: 0.085}
-  m_TimeToStationary: 100000000
+  m_TimeToStationary: 1
