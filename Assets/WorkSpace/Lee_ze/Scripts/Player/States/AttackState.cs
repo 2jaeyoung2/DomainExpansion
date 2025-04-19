@@ -25,16 +25,18 @@ public class AttackState : IPlayerState
         // ----> State Change
         if (player.attackCheck.isAttack == false)
         {
-            if (player.agent.hasPath == false)
+            if (player.agent.hasPath == true)
             {
-                player.ChangeStateTo(new IdleState());
+                Debug.Log("A2R");
+                player.ChangeStateTo(new RunState());
 
                 return;
             }
 
-            if (player.agent.hasPath == true)
+            if (player.agent.hasPath == false)
             {
-                player.ChangeStateTo(new RunState());
+                Debug.Log("A2I");
+                player.ChangeStateTo(new IdleState());
 
                 return;
             }
@@ -46,13 +48,6 @@ public class AttackState : IPlayerState
                 return;
             }
         }
-        
-        //if (player.isCancled == true)
-        //{
-        //    player.playerAnim.SetTrigger("ToIdle");
-
-        //    player.ChangeStateTo(new IdleState());
-        //}
     }
 
     public void ExitState()

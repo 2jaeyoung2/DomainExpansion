@@ -12,8 +12,6 @@ public class IdleState : IPlayerState
 
         player.playerAnim.SetBool("IsRun", false);
 
-        Debug.Log(this.player.isDash);
-
         Debug.Log("idle start");
     }
 

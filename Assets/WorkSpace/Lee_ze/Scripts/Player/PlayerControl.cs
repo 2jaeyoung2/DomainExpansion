@@ -5,8 +5,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : MonoBehaviour, IDamageable
 {
+    [SerializeField]
+    private PlayerStatistics playerStats;
+
     private IPlayerState currentState;
 
     public MouseCursorPosition mousePos;
@@ -20,13 +23,15 @@ public class PlayerControl : MonoBehaviour
     public PlayerAttack attackCheck;
 
 
-    Vector3 targetPos;
+    Vector3 cursorPos;
 
     Vector3 direction;
 
     public bool isCancled = false;
 
     public bool isDash = false;
+
+    public bool isHit = false;
 
     private void Start()
     {
@@ -86,9 +91,9 @@ public class PlayerControl : MonoBehaviour
 
     private void SetPlayerRotation() // 이동하는 방향으로 rotate
     {
-        targetPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
+        cursorPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
 
-        direction = (targetPos - transform.position).normalized;
+        direction = (cursorPos - transform.position).normalized;
 
         transform.rotation = Quaternion.LookRotation(direction);
     }
@@ -148,6 +153,17 @@ public class PlayerControl : MonoBehaviour
     }
 
     #endregion
+
+    public void GetHit(int damage)
+    {
+        isHit = true;
+
+        playerStats.PlayerHP -= damage;
+
+        int num = Random.Range(0, 2);
+
+        playerAnim.SetInteger("Hit", num);
+    }
 
     private void OnDisable()
     {
