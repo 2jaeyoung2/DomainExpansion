@@ -199,7 +199,7 @@ MonoBehaviour:
   hor: 5
   ver: 4
   dist: 5
-  playFallTime: 5
+  playFallTime: 3
   fallingTime: 0.5
   fallHeight: 20
   placeMode: 0
@@ -589,7 +589,7 @@ MonoBehaviour:
   hor: 5
   ver: 4
   dist: 5
-  playFallTime: 5
+  playFallTime: 3
   fallingTime: 0.5
   fallHeight: 20
   placeMode: 0
