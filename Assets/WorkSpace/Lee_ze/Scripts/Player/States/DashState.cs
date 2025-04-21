@@ -19,6 +19,8 @@ public class DashState : IPlayerState
 
         this.player.playerAnim.SetTrigger("IsDash");
 
+        this.player.playerStats.PlayerHP -= 10;
+
         Debug.Log("dash start");
     }
 

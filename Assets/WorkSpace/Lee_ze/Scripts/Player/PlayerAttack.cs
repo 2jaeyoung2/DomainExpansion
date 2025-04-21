@@ -34,4 +34,11 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttack = false;
     }
+
+    public void NoMoreAttack()
+    {
+        playerAnim.ResetTrigger("Z");
+
+        playerAnim.ResetTrigger("X");
+    }
 }

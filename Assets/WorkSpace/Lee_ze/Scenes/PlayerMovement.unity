@@ -2045,8 +2045,8 @@ GameObject:
   - component: {fileID: 6271034808478072630}
   - component: {fileID: 6271034808478072628}
   - component: {fileID: 6271034808478072629}
-  - component: {fileID: 6271034808478072631}
   - component: {fileID: 6271034808478072632}
+  - component: {fileID: 6271034808478072631}
   m_Layer: 0
   m_Name: Player_Dwarf_Soldier
   m_TagString: Untagged
@@ -4089,13 +4089,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc529d50d9b4884b807689fe0a1e60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
+  playerStats: {fileID: 6271034808478072632}
   mousePos: {fileID: 110842126}
   agent: {fileID: 6271034808478072627}
   playerCollider: {fileID: 6271034808478072630}
   playerAnim: {fileID: 4380784599522388117}
   attackCheck: {fileID: 6271034808478072631}
-  isCancled: 0
   isDash: 0
   isHit: 0
 --- !u!136 &6271034808478072630

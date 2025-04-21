@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class PlayerStatistics : MonoBehaviour
 {
-    private int playerHP;
+    private float playerHP;
 
-    public int PlayerHP
+    private float playerStamina;
+
+    private int playerDownCount;
+
+    public float PlayerHP
     {
         get
         {
@@ -19,8 +23,36 @@ public class PlayerStatistics : MonoBehaviour
         }
     }
 
+    public float PlayerStamina
+    {
+        get
+        {
+            return playerStamina;
+        }
+        set
+        {
+            playerStamina = value;
+        }
+    }
+
+    public int PlayerDownCount
+    {
+        get
+        {
+            return playerDownCount;
+        }
+        set
+        {
+            playerDownCount = value;
+        }
+    }
+
     private void Start()
     {
-        PlayerHP = 100;
+        PlayerHP = 200;
+
+        PlayerStamina = 100;
+
+        PlayerDownCount = 0;
     }
 }

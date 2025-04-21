@@ -47,6 +47,13 @@ public class AttackState : IPlayerState
 
                 return;
             }
+
+            if (player.isHit == true)
+            {
+                player.ChangeStateTo(new GetHitState());
+
+                return;
+            }
         }
     }
 

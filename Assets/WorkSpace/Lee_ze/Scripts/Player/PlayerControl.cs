@@ -7,8 +7,7 @@ using UnityEngine.InputSystem.HID;
 
 public class PlayerControl : MonoBehaviour, IDamageable
 {
-    [SerializeField]
-    private PlayerStatistics playerStats;
+    public PlayerStatistics playerStats;
 
     private IPlayerState currentState;
 
@@ -26,8 +25,6 @@ public class PlayerControl : MonoBehaviour, IDamageable
     Vector3 cursorPos;
 
     Vector3 direction;
-
-    public bool isCancled = false;
 
     public bool isDash = false;
 
@@ -102,16 +99,7 @@ public class PlayerControl : MonoBehaviour, IDamageable
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            isCancled = true;
-
             agent.ResetPath();
-        }
-
-        if (ctx.phase == InputActionPhase.Canceled)
-        {
-            attackCheck.isAttack = false;
-
-            isCancled = false;
         }
     }
 
@@ -154,16 +142,27 @@ public class PlayerControl : MonoBehaviour, IDamageable
 
     #endregion
 
-    public void GetHit(int damage)
+    #region 피격 관련 스크립트
+
+    public void GetHit(int damage, int downCountStack)
     {
         isHit = true;
 
+        damage = 0; // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 임시코드
+
         playerStats.PlayerHP -= damage;
 
-        int num = Random.Range(0, 2);
+        playerStats.PlayerDownCount += downCountStack;
 
-        playerAnim.SetInteger("Hit", num);
+        playerAnim.SetTrigger("Hit");
     }
+
+    public void EndHit() // 피격 애니메이션 끝 부분에 호출되는 이벤트 함수
+    {
+        isHit = false;
+    }
+
+    #endregion
 
     private void OnDisable()
     {
