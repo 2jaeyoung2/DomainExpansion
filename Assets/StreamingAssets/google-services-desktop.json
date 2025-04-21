@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "351733634003",
+    "firebase_url": "https://domainexpansion-25db4-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "domainexpansion-25db4",
+    "storage_bucket": "domainexpansion-25db4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351733634003:android:3a6d020713431de285d526",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.AOSTest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFAqLCPya4KBdw0OHBQNDjlzg6ZB4UNvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
