@@ -19,7 +19,7 @@ public class DashState : IPlayerState
 
         this.player.playerAnim.SetTrigger("IsDash");
 
-        this.player.playerStats.PlayerHP -= 10;
+        PayCost();
 
         Debug.Log("dash start");
     }
@@ -69,5 +69,12 @@ public class DashState : IPlayerState
         player.playerCollider.enabled = true; // 콜라이더 켜기
 
         Debug.Log("dash end");
+    }
+
+    private void PayCost()
+    {
+        player.playerStats.PlayerStamina -= player.dashCost; // 사용하면 본인 스테미나 일부 깎임
+
+        player.playerStats.PlayerHP -= 10; // 사용하면 본인 체력 일부 깎임
     }
 }

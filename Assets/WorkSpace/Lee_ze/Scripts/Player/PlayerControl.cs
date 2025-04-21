@@ -26,9 +26,13 @@ public class PlayerControl : MonoBehaviour, IDamageable
 
     Vector3 direction;
 
+    Coroutine rotationCor;
+
     public bool isDash = false;
 
     public bool isHit = false;
+
+    public float dashCost = 15;
 
     private void Start()
     {
@@ -92,8 +96,35 @@ public class PlayerControl : MonoBehaviour, IDamageable
 
         direction = (cursorPos - transform.position).normalized;
 
-        transform.rotation = Quaternion.LookRotation(direction);
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            if (rotationCor != null)
+            {
+                StopCoroutine(rotationCor);
+            }
+
+            rotationCor = StartCoroutine(RotateToDirection(targetRotation));
+        }
     }
+
+    private IEnumerator RotateToDirection(Quaternion targetRotation) // 부드러운 회전
+    {
+        float speed = 30f;
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
+
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
+    }
+
+
+
 
     public void OnStop(InputAction.CallbackContext ctx) // 'S' 바인딩
     {
@@ -111,7 +142,10 @@ public class PlayerControl : MonoBehaviour, IDamageable
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            isDash = true;
+            if (playerStats.PlayerStamina >= dashCost) // 스테미나가 15 이상일 때
+            {
+                isDash = true;
+            }
         }
     }
 
