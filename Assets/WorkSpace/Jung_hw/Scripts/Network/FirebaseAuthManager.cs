@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FirebaseAuthManager : MonoBehaviourPunCallbacks
@@ -112,7 +114,7 @@ public class FirebaseAuthManager : MonoBehaviourPunCallbacks
 
     public void Register()
     {
-        if(pwRegiField.text != pwCheckRegiField.text)
+        if (pwRegiField.text != pwCheckRegiField.text)
         {
             Debug.Log("비밀번호 틀림");
             return;
@@ -203,5 +205,17 @@ public class FirebaseAuthManager : MonoBehaviourPunCallbacks
         Debug.Log("연결완 " + PhotonNetwork.NickName);
         SceneManager.LoadScene("Lobby");
 
+    }
+
+    public void OnTab(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+            }
+            EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnRight().Select();
+        }
     }
 }
