@@ -46,8 +46,9 @@ public class MapMaker : MonoBehaviour
     [SerializeField] float playFallTime;
     [SerializeField] float fallingTime;
     [SerializeField] int fallHeight;
-    [SerializeField] bool placeMode = false;
+    public bool placeMode = false;
     [SerializeField] bool canPlace = false;
+    [SerializeField] bool randomGenerate = false;
     [SerializeField][Tooltip("현재 선택한 타일 인덱스")] int selected = 0;
     TileInfo[] tileList;
 
@@ -70,6 +71,11 @@ public class MapMaker : MonoBehaviour
             placingTiles.Add(tempTile);
         }
         MakeBase();
+        if(randomGenerate)
+        {
+            RandomTile();
+        }
+        DisplayMap();
     }
 
     private void Update()
@@ -232,6 +238,19 @@ public class MapMaker : MonoBehaviour
             }
         }
         StartCoroutine(PlayTileFall());
+    }
+
+    public void DisplayMap()
+    {
+        DeleteTiles();
+        Debug.Log("MakeMap");
+        for (int i = 0; i < tileList.Length; i++)
+        {
+            if (tileList[i].TileId != 0)
+            {
+                Instantiate(tiles[tileList[i].TileId - 1], startPos.transform.GetChild(i).GetChild(0)).transform.rotation = Quaternion.Euler(tileList[i].TileRot);
+            }
+        }
     }
 
     IEnumerator PlayTileFall()

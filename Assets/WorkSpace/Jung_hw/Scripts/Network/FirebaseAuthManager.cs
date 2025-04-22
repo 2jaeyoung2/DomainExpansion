@@ -215,7 +215,10 @@ public class FirebaseAuthManager : MonoBehaviourPunCallbacks
             {
                 EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
             }
-            EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnRight().Select();
+            else
+            {
+                EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnRight().Select();
+            }
         }
     }
 }
