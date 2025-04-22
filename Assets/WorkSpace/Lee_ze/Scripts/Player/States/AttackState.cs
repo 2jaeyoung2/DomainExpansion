@@ -10,10 +10,12 @@ public class AttackState : IPlayerState
     {
         this.player = player;
 
-        if (this.player.agent.hasPath == true)
+        if (this.player.agent.hasPath == true) // 공격 시작하면 가던 길을 멈춤
         {
             this.player.agent.ResetPath();
         }
+
+        player.WeaponsOn();
 
         Debug.Log("attack start");
     }
@@ -59,6 +61,8 @@ public class AttackState : IPlayerState
 
     public void ExitState()
     {
+        player.WeaponsOff();
+
         Debug.Log("attack end");
     }
 }

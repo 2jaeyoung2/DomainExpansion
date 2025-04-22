@@ -49,7 +49,7 @@ public class PlayerStatistics : MonoBehaviour
 
     private void Start()
     {
-        PlayerHP = 200;
+        PlayerHP = 30; // TODO: 200쯤으로 설정하면 될 듯.
 
         PlayerStamina = 100;
 

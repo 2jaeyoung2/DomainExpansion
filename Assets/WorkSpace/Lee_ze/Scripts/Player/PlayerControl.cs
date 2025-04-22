@@ -21,6 +21,10 @@ public class PlayerControl : MonoBehaviour, IDamageable
 
     public PlayerAttack attackCheck;
 
+    public GameObject[] swords;
+
+    public GameObject coffin;
+
 
     Vector3 cursorPos;
 
@@ -39,6 +43,8 @@ public class PlayerControl : MonoBehaviour, IDamageable
         PlayerNavMeshAgentSettings();
 
         mousePos.OnDirectionChanged += GoToDestination;
+
+        WeaponsOff();
 
         ChangeStateTo(new IdleState());
     }
@@ -182,9 +188,12 @@ public class PlayerControl : MonoBehaviour, IDamageable
     {
         isHit = true;
 
-        damage = 0; // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 임시코드
-
         playerStats.PlayerHP -= damage;
+
+        if (playerStats.PlayerHP <= 0)
+        {
+            ChangeStateTo(new DeadState());
+        }
 
         playerStats.PlayerDownCount += downCountStack;
 
@@ -194,6 +203,26 @@ public class PlayerControl : MonoBehaviour, IDamageable
     public void EndHit() // 피격 애니메이션 끝 부분에 호출되는 이벤트 함수
     {
         isHit = false;
+    }
+
+    #endregion
+
+    #region 무기 관련 스크립트
+
+    public void WeaponsOn()
+    {
+        foreach (var sword in swords)
+        {
+            sword.GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    public void WeaponsOff()
+    {
+        foreach (var sword in swords)
+        {
+            sword.GetComponent<Collider>().enabled = false;
+        }
     }
 
     #endregion

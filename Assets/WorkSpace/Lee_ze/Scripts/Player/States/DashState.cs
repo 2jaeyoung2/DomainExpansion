@@ -19,7 +19,7 @@ public class DashState : IPlayerState
 
         this.player.playerAnim.SetTrigger("IsDash");
 
-        PayCost();
+        PayDashCost();
 
         Debug.Log("dash start");
     }
@@ -71,7 +71,7 @@ public class DashState : IPlayerState
         Debug.Log("dash end");
     }
 
-    private void PayCost()
+    private void PayDashCost()
     {
         player.playerStats.PlayerStamina -= player.dashCost; // 사용하면 본인 스테미나 일부 깎임
 
