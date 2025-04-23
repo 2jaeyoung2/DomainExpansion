@@ -3,25 +3,51 @@ using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 
-public struct TileInfo
+[System.Serializable]
+public class TileInfo
 {
-    public int TileId
+    public int tileId;
+    public Vector3 tileRot;
+
+    //프로퍼티쓰니까 Json에 데이터 안써짐
+    /*public int TileId
     {
-        get; set;
+        get
+        {
+            return tileId;
+        }
+        set
+        {
+            tileId = value;
+        }
     }
+
 
     public Vector3 TileRot
     {
-        get; set;
-    }
+        get
+        {
+            return tileRot;
+        }
+        set
+        {
+            tileRot = value;
+        }
+    }*/
 
     public TileInfo(int id, Vector3 rot)
     {
-        TileId = id;
-        TileRot = rot;
+        tileId = id;
+        tileRot = rot;
     }
 }
 
+[System.Serializable]
+public class Serialization<T>
+{
+    public Serialization(List<T> _target) => map = _target;
+    public List<T> map;
+}
 public class MapMaker : MonoBehaviour
 {
     [SerializeField] NavMeshSurface surface;
@@ -46,10 +72,11 @@ public class MapMaker : MonoBehaviour
     [SerializeField] float playFallTime;
     [SerializeField] float fallingTime;
     [SerializeField] int fallHeight;
-    [SerializeField] bool placeMode = false;
+    public bool placeMode = false;
     [SerializeField] bool canPlace = false;
+    [SerializeField] bool randomGenerate = false;
     [SerializeField][Tooltip("현재 선택한 타일 인덱스")] int selected = 0;
-    TileInfo[] tileList;
+    List<TileInfo> tileList;
 
     Ray ray;
     RaycastHit hit;
@@ -59,7 +86,13 @@ public class MapMaker : MonoBehaviour
     void Awake()
     {
         placingTiles = new List<GameObject>();
-        tileList = new TileInfo[hor * ver];
+        tileList = new List<TileInfo>(hor * ver);
+        for (int i = 0; i < tileList.Capacity; i++)
+        {
+            tileList.Add(new TileInfo(0, Vector3.zero));
+        }
+
+        Debug.Log("ca " + tileList.Capacity);
         foreach (var tile in tiles) //미리보기용 타일 프리팹들 생성해놓기
         {
             GameObject tempTile = (tile == null ? null : Instantiate(tile));
@@ -70,6 +103,11 @@ public class MapMaker : MonoBehaviour
             placingTiles.Add(tempTile);
         }
         MakeBase();
+        if (randomGenerate)
+        {
+            RandomTile();
+            DisplayMap();
+        }
     }
 
     private void Update()
@@ -189,7 +227,7 @@ public class MapMaker : MonoBehaviour
 
     public void MakeBase() //바닥타일 생성
     {
-        for (int i = 0; i < tileList.Length; i++)
+        for (int i = 0; i < tileList.Capacity; i++)
         {
             Vector3 pos = new Vector3(i % hor * dist, 0, i / hor * dist);
             GameObject baseTile = Instantiate(baseObj, startPos.position + pos, Quaternion.identity);
@@ -219,11 +257,11 @@ public class MapMaker : MonoBehaviour
     {
         DeleteTiles();
         Debug.Log("MakeMap");
-        for (int i = 0; i < tileList.Length; i++)
+        for (int i = 0; i < tileList.Capacity; i++)
         {
-            if (tileList[i].TileId != 0)
+            if (tileList[i].tileId != 0)
             {
-                Instantiate(tiles[tileList[i].TileId - 1], startPos.transform.GetChild(i).GetChild(0)).transform.rotation = Quaternion.Euler(tileList[i].TileRot);
+                Instantiate(tiles[tileList[i].tileId - 1], startPos.transform.GetChild(i).GetChild(0)).transform.rotation = Quaternion.Euler(tileList[i].tileRot);
                 Vector3 height = new Vector3(0, fallHeight, 0);
                 if (startPos.GetChild(i).GetChild(0).childCount > 0)
                 {
@@ -234,10 +272,23 @@ public class MapMaker : MonoBehaviour
         StartCoroutine(PlayTileFall());
     }
 
+    public void DisplayMap()
+    {
+        DeleteTiles();
+        Debug.Log("MakeMap");
+        for (int i = 0; i < tileList.Capacity; i++)
+        {
+            if (tileList[i].tileId != 0)
+            {
+                Instantiate(tiles[tileList[i].tileId - 1], startPos.transform.GetChild(i).GetChild(0)).transform.rotation = Quaternion.Euler(tileList[i].tileRot);
+            }
+        }
+    }
+
     IEnumerator PlayTileFall()
     {
-        WaitForSeconds wait = new WaitForSeconds(playFallTime / tileList.Length);
-        for (int i = 0; i < tileList.Length; i++)
+        WaitForSeconds wait = new WaitForSeconds(playFallTime / tileList.Capacity);
+        for (int i = 0; i < tileList.Capacity; i++)
         {
             if (startPos.GetChild(i).GetChild(0).childCount > 0)
             {
@@ -264,8 +315,10 @@ public class MapMaker : MonoBehaviour
 
     public void RandomTile()
     {
-        for (int i = 0; i < tileList.Length; i++)
+        for (int i = 0; i < tileList.Capacity; i++)
         {
+            Debug.Log("aa " + i);
+            Debug.Log("bb " + tileList[i].tileId + " " + tileList[i].tileRot);
             Vector3 rot = new Vector3(0, Random.Range(0f, 360f), 0);
             int tileNum = Random.Range(0, tiles.Count + 1);
             if (tileNum == 0)
@@ -285,5 +338,18 @@ public class MapMaker : MonoBehaviour
         RandomTile();
         MakeMap();
         surface.BuildNavMesh();
+    }
+
+    public string GetTileList()
+    {
+        string json = JsonUtility.ToJson(new Serialization<TileInfo>(tileList), true);
+        Debug.Log("js " + json);
+        return json;
+    }
+
+    public void SetTileList(List<TileInfo> tileInfos)
+    {
+        tileList = tileInfos;
+        DisplayMap();
     }
 }
