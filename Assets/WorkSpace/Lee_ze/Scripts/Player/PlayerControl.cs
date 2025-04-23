@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : MonoBehaviour, IDamageable
 {
+    public PlayerStatistics playerStats;
+
     private IPlayerState currentState;
 
     public MouseCursorPosition mousePos;
@@ -19,20 +21,30 @@ public class PlayerControl : MonoBehaviour
 
     public PlayerAttack attackCheck;
 
+    public GameObject[] swords;
 
-    Vector3 targetPos;
+    public GameObject coffin;
+
+
+    Vector3 cursorPos;
 
     Vector3 direction;
 
-    public bool isCancled = false;
+    Coroutine rotationCor;
 
     public bool isDash = false;
+
+    public bool isHit = false;
+
+    public float dashCost = 15;
 
     private void Start()
     {
         PlayerNavMeshAgentSettings();
 
         mousePos.OnDirectionChanged += GoToDestination;
+
+        WeaponsOff();
 
         ChangeStateTo(new IdleState());
     }
@@ -86,27 +98,42 @@ public class PlayerControl : MonoBehaviour
 
     private void SetPlayerRotation() // 이동하는 방향으로 rotate
     {
-        targetPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
+        cursorPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
 
-        direction = (targetPos - transform.position).normalized;
+        direction = (cursorPos - transform.position).normalized;
 
-        transform.rotation = Quaternion.LookRotation(direction);
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            if (rotationCor != null)
+            {
+                StopCoroutine(rotationCor);
+            }
+
+            rotationCor = StartCoroutine(RotateToDirection(targetRotation));
+        }
+    }
+
+    private IEnumerator RotateToDirection(Quaternion targetRotation) // 부드러운 회전
+    {
+        float speed = 30f;
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
+
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
     }
 
     public void OnStop(InputAction.CallbackContext ctx) // 'S' 바인딩
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            isCancled = true;
-
             agent.ResetPath();
-        }
-
-        if (ctx.phase == InputActionPhase.Canceled)
-        {
-            attackCheck.isAttack = false;
-
-            isCancled = false;
         }
     }
 
@@ -118,7 +145,10 @@ public class PlayerControl : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            isDash = true;
+            if (playerStats.PlayerStamina >= dashCost) // 스테미나가 15 이상일 때
+            {
+                isDash = true;
+            }
         }
     }
 
@@ -145,6 +175,53 @@ public class PlayerControl : MonoBehaviour
     public void OffDash() // 애니메이션 특정 프레임에 이벤트성 호출
     {
         isDash = false;
+    }
+
+    #endregion
+
+    #region 피격 관련 스크립트
+
+    public void GetHit(int damage, int downCountStack)
+    {
+        isHit = true;
+
+        playerStats.PlayerHP -= damage;
+
+        if (playerStats.PlayerHP <= 0)
+        {
+            ChangeStateTo(new DeadState());
+        }
+
+        playerStats.PlayerDownCount += downCountStack;
+
+        playerAnim.SetTrigger("Hit");
+    }
+
+    public void EndHit() // 피격 애니메이션 끝 부분에 호출되는 이벤트 함수
+    {
+        isHit = false;
+    }
+
+    #endregion
+
+    #region 무기 관련 스크립트
+
+    // 공격 애니메이션 특정 프레임에 호출되는 이벤트 함수
+
+    public void WeaponsOn()
+    {
+        foreach (var sword in swords)
+        {
+            sword.GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    public void WeaponsOff()
+    {
+        foreach (var sword in swords)
+        {
+            sword.GetComponent<Collider>().enabled = false;
+        }
     }
 
     #endregion

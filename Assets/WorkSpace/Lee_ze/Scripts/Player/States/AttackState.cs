@@ -10,10 +10,12 @@ public class AttackState : IPlayerState
     {
         this.player = player;
 
-        if (this.player.agent.hasPath == true)
+        if (this.player.agent.hasPath == true) // 공격 시작하면 가던 길을 멈춤
         {
             this.player.agent.ResetPath();
         }
+
+        player.WeaponsOn();
 
         Debug.Log("attack start");
     }
@@ -25,16 +27,18 @@ public class AttackState : IPlayerState
         // ----> State Change
         if (player.attackCheck.isAttack == false)
         {
-            if (player.agent.hasPath == false)
+            if (player.agent.hasPath == true)
             {
-                player.ChangeStateTo(new IdleState());
+                Debug.Log("A2R");
+                player.ChangeStateTo(new RunState());
 
                 return;
             }
 
-            if (player.agent.hasPath == true)
+            if (player.agent.hasPath == false)
             {
-                player.ChangeStateTo(new RunState());
+                Debug.Log("A2I");
+                player.ChangeStateTo(new IdleState());
 
                 return;
             }
@@ -45,18 +49,20 @@ public class AttackState : IPlayerState
 
                 return;
             }
-        }
-        
-        //if (player.isCancled == true)
-        //{
-        //    player.playerAnim.SetTrigger("ToIdle");
 
-        //    player.ChangeStateTo(new IdleState());
-        //}
+            if (player.isHit == true)
+            {
+                player.ChangeStateTo(new GetHitState());
+
+                return;
+            }
+        }
     }
 
     public void ExitState()
     {
+        player.WeaponsOff();
+
         Debug.Log("attack end");
     }
 }

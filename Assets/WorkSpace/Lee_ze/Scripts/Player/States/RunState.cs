@@ -40,6 +40,13 @@ public class RunState : IPlayerState
 
             return;
         }
+
+        if (player.isHit == true)
+        {
+            player.ChangeStateTo(new GetHitState());
+
+            return;
+        }
     }
 
     public void ExitState()

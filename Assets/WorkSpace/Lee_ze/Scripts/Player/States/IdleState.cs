@@ -12,8 +12,6 @@ public class IdleState : IPlayerState
 
         player.playerAnim.SetBool("IsRun", false);
 
-        Debug.Log(this.player.isDash);
-
         Debug.Log("idle start");
     }
 
@@ -39,6 +37,13 @@ public class IdleState : IPlayerState
         if (player.agent.hasPath == true)
         {
             player.ChangeStateTo(new RunState());
+
+            return;
+        }
+
+        if (player.isHit == true)
+        {
+            player.ChangeStateTo(new GetHitState());
 
             return;
         }

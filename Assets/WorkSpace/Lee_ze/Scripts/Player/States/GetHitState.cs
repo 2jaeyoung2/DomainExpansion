@@ -16,6 +16,26 @@ public class GetHitState : IPlayerState
     public void UpdateState()
     {
 
+
+        // ----> State Change
+        if (player.playerStats.PlayerDownCount >= 20) // 피격으로 Down Count가 일정 량 쌓이면 강제로 넘어짐
+        {
+            player.playerStats.PlayerDownCount = 0; // Down Count 초기화
+
+            player.ChangeStateTo(new DownState());
+
+            return;
+        }
+
+        if (player.isHit == false)
+        {
+            if (player.agent.hasPath == false)
+            {
+                player.ChangeStateTo(new IdleState());
+
+                return;
+            }
+        }
     }
 
     public void ExitState()
