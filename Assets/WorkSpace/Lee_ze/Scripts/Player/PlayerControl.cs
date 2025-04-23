@@ -129,9 +129,6 @@ public class PlayerControl : MonoBehaviour, IDamageable
         transform.rotation = targetRotation;
     }
 
-
-
-
     public void OnStop(InputAction.CallbackContext ctx) // 'S' 바인딩
     {
         if (ctx.phase == InputActionPhase.Started)
@@ -208,6 +205,8 @@ public class PlayerControl : MonoBehaviour, IDamageable
     #endregion
 
     #region 무기 관련 스크립트
+
+    // 공격 애니메이션 특정 프레임에 호출되는 이벤트 함수
 
     public void WeaponsOn()
     {

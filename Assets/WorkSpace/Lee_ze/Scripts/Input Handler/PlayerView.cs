@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +13,7 @@ public class PlayerView : MonoBehaviour
     [Header("Camera Movement Settings")]
 
     [SerializeField]
-    private float cameraSpeed = 30f;
+    private float cameraSpeed = 10f;
 
     [SerializeField]
     private float edgePixel = 50f;
@@ -25,43 +26,105 @@ public class PlayerView : MonoBehaviour
     [SerializeField]
     private Vector2 zLimit = new Vector2(-15f, 25f);
 
-    private void Update()
+    private Vector2 mousePos;
+
+    private Coroutine moveCamHorizontalCor = null;
+
+    private Coroutine moveCamVerticalCor = null;
+
+    public void OnMouseMove(InputAction.CallbackContext ctx)
     {
-        Vector3 moveDir = Vector3.zero;
+        mousePos = ctx.ReadValue<Vector2>();
 
-        Vector3 mousePos = Input.mousePosition;
-
-        if (mousePos.x <= edgePixel)
+        // 만약 범위 안에 있으면 return;
+        if (IsInHorizontalBoundary() == true && IsInVerticalBoundary() == true)
         {
-            moveDir += Vector3.left;
+            return;
         }
 
-        else if (mousePos.x >= Screen.width - edgePixel)
+        if (moveCamHorizontalCor == null)
         {
-            moveDir += Vector3.right;
+            moveCamHorizontalCor = StartCoroutine(MoveCamHorizontal(mousePos));
         }
 
-        if (mousePos.y <= edgePixel)
+        if (moveCamVerticalCor == null)
         {
-            moveDir += Vector3.back;
+            moveCamVerticalCor = StartCoroutine(MoveCamVertical(mousePos));
         }
-
-        else if (mousePos.y >= Screen.height - edgePixel)
-        {
-            moveDir += Vector3.forward;
-        }
-
-        Vector3 camPos = mainCamera.transform.position + moveDir.normalized * cameraSpeed * Time.deltaTime;
-
-
-        camPos.x = Mathf.Clamp(camPos.x, xLimit.x, xLimit.y);
-
-        camPos.z = Mathf.Clamp(camPos.z, zLimit.x, zLimit.y);
-
-        mainCamera.transform.position = camPos;
     }
 
-    public void OnToPlayer(InputAction.CallbackContext ctx)
+    private IEnumerator MoveCamHorizontal(Vector2 mousePos)
+    {
+        while (IsInHorizontalBoundary() == false)
+        {
+            Vector3 moveDir = Vector3.zero;
+
+            if (mousePos.x <= edgePixel)
+            {
+                moveDir += Vector3.left;
+            }
+
+            else if (mousePos.x >= Screen.width - edgePixel)
+            {
+                moveDir += Vector3.right;
+            }
+
+            Vector3 camPos = mainCamera.transform.position + moveDir.normalized * cameraSpeed * Time.deltaTime;
+
+            camPos.x = Mathf.Clamp(camPos.x, xLimit.x, xLimit.y);
+
+            camPos.z = Mathf.Clamp(camPos.z, zLimit.x, zLimit.y);
+
+            mainCamera.transform.position = camPos;
+
+            yield return null;
+        }
+
+        moveCamHorizontalCor = null;
+    }
+
+    private IEnumerator MoveCamVertical(Vector2 mousePos)
+    {
+        while (IsInVerticalBoundary() == false)
+        {
+            Vector3 moveDir = Vector3.zero;
+
+            if (mousePos.y <= edgePixel)
+            {
+                moveDir += Vector3.back;
+            }
+
+            else if (mousePos.y >= Screen.height - edgePixel)
+            {
+                moveDir += Vector3.forward;
+            }
+
+            Vector3 camPos = mainCamera.transform.position + moveDir.normalized * cameraSpeed * Time.deltaTime;
+
+            camPos.x = Mathf.Clamp(camPos.x, xLimit.x, xLimit.y);
+
+            camPos.z = Mathf.Clamp(camPos.z, zLimit.x, zLimit.y);
+
+            mainCamera.transform.position = camPos;
+
+            yield return null;
+        }
+
+        moveCamVerticalCor = null;
+    }
+
+    private bool IsInHorizontalBoundary()
+    {
+        return mousePos.x < Screen.width - edgePixel && mousePos.x > edgePixel;
+    }
+
+    private bool IsInVerticalBoundary()
+    {
+        return mousePos.y < Screen.height - edgePixel && mousePos.y > edgePixel;
+    }
+
+
+    public void OnToPlayer(InputAction.CallbackContext ctx) // 스페이스바 바인딩
     {
         if (ctx.phase == InputActionPhase.Started)
         {
@@ -69,7 +132,7 @@ public class PlayerView : MonoBehaviour
         }
     }
 
-    private void CamToPlayer()
+    private void CamToPlayer() // 카메라를 플레이어 중심으로 이동
     {
         if (playerPos != null)
         {
