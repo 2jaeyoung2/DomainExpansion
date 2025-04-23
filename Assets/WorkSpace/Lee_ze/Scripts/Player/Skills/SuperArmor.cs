@@ -1,18 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SuperArmor : MonoBehaviour
+public class SuperArmor : ISkill
 {
-    // Start is called before the first frame update
-    void Start()
+    private PlayerControl player;
+
+    public void ActiveThisSkill(PlayerControl player)
     {
-        
+        this.player = player;
+
+        player.StartCoroutine(OnSuperArmor(2f));
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator OnSuperArmor(float sustainingTime)
     {
-        
+        player.playerCollider.enabled = false;
+
+        yield return new WaitForSeconds(sustainingTime);
+
+        player.playerCollider.enabled = true;
     }
 }

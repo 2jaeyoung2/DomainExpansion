@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManaBreak : MonoBehaviour
+public class ManaBreak : ISkill
 {
-    // Start is called before the first frame update
-    void Start()
+    private PlayerControl player;
+
+    public void ActiveThisSkill(PlayerControl player)
     {
-        
+        this.player = player;
+
+        OnManaBreak();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnManaBreak()
     {
-        
+        player.playerStats.PlayerCurrentStamina -= 40;
+
+        player.ChangeStateTo(new DownState());
     }
 }
