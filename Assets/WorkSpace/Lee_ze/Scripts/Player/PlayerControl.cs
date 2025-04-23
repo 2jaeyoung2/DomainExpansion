@@ -4,8 +4,9 @@ using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using System;
 
-public class PlayerControl : MonoBehaviour, IDamageable
+public class PlayerControl : MonoBehaviour
 {
     public PlayerStatistics playerStats;
 
@@ -26,17 +27,17 @@ public class PlayerControl : MonoBehaviour, IDamageable
     public GameObject coffin;
 
 
-    Vector3 cursorPos;
+    private Vector3 cursorPos;
 
-    Vector3 direction;
+    public Vector3 direction;
 
-    Coroutine rotationCor;
+    private Coroutine rotationCor;
 
     public bool isDash = false;
 
     public bool isHit = false;
 
-    public float dashCost = 15;
+    public float dashCost = 15; // 구르기 시 15cost
 
     private void Start()
     {
@@ -96,7 +97,7 @@ public class PlayerControl : MonoBehaviour, IDamageable
         }
     }
 
-    private void SetPlayerRotation() // 이동하는 방향으로 rotate
+    public void SetPlayerRotation() // 이동하는 방향으로 rotate
     {
         cursorPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
 
@@ -145,7 +146,7 @@ public class PlayerControl : MonoBehaviour, IDamageable
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            if (playerStats.PlayerStamina >= dashCost) // 스테미나가 15 이상일 때
+            if (playerStats.PlayerCurrentStamina >= dashCost) // 스테미나가 15 이상일 때
             {
                 isDash = true;
             }
@@ -175,31 +176,6 @@ public class PlayerControl : MonoBehaviour, IDamageable
     public void OffDash() // 애니메이션 특정 프레임에 이벤트성 호출
     {
         isDash = false;
-    }
-
-    #endregion
-
-    #region 피격 관련 스크립트
-
-    public void GetHit(int damage, int downCountStack)
-    {
-        isHit = true;
-
-        playerStats.PlayerHP -= damage;
-
-        if (playerStats.PlayerHP <= 0)
-        {
-            ChangeStateTo(new DeadState());
-        }
-
-        playerStats.PlayerDownCount += downCountStack;
-
-        playerAnim.SetTrigger("Hit");
-    }
-
-    public void EndHit() // 피격 애니메이션 끝 부분에 호출되는 이벤트 함수
-    {
-        isHit = false;
     }
 
     #endregion

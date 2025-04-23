@@ -1,4 +1,4 @@
 public interface IDamageable
 {
-    public void GetHit(int damage, int downCountStack);
+    public void GetDamage(int damage, int downCountStack);
 }

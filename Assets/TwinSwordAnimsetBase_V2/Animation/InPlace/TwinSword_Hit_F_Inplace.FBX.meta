@@ -439,7 +439,7 @@ ModelImporter:
       - time: 0.8534483
         functionName: EndHit
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 4bc529d50d9b4884b807689fe0a1e60d, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 9495946175d26b943a3d5c0a08ac1383, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

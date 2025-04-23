@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Services.Analytics.Internal;
 using UnityEngine;
 
 public class DashState : IPlayerState
@@ -20,6 +18,8 @@ public class DashState : IPlayerState
         this.player.playerAnim.SetTrigger("IsDash");
 
         PayDashCost();
+
+        this.player.StartCoroutine(ResetIsDash());
 
         Debug.Log("dash start");
     }
@@ -73,8 +73,15 @@ public class DashState : IPlayerState
 
     private void PayDashCost()
     {
-        player.playerStats.PlayerStamina -= player.dashCost; // 사용하면 본인 스테미나 일부 깎임
+        player.playerStats.UseStamina(player.dashCost);
 
-        player.playerStats.PlayerHP -= 10; // 사용하면 본인 체력 일부 깎임
+        player.playerStats.GetDashDamage(10); // 대쉬 사용 시 자신 체력 -10(임의 수치)
+    }
+
+    private IEnumerator ResetIsDash()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        player.isDash = false;
     }
 }
