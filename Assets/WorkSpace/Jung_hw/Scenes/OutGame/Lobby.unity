@@ -1526,7 +1526,7 @@ MonoBehaviour:
   fallHeight: 20
   placeMode: 0
   canPlace: 0
-  randomGenerate: 1
+  randomGenerate: 0
   selected: 0
 --- !u!4 &1438342371
 Transform:

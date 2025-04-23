@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Firebase.Database;
 
 public class FirebaseAuthManager : MonoBehaviourPunCallbacks
 {
@@ -30,6 +31,7 @@ public class FirebaseAuthManager : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text regiNotifyText;
 
     public static FirebaseUser user;
+    public static DatabaseReference dbRef;
     public FirebaseAuth auth;
 
 
@@ -42,6 +44,7 @@ public class FirebaseAuthManager : MonoBehaviourPunCallbacks
             if (depStatus == DependencyStatus.Available)
             {
                 auth = FirebaseAuth.DefaultInstance;
+                dbRef = FirebaseDatabase.DefaultInstance.RootReference;
             }
             else
             {
