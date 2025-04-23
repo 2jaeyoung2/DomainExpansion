@@ -6,6 +6,8 @@ TagManager:
   tags:
   - FLOOR
   - Placeable
+  - BLUE
+  - RED
   layers:
   - Default
   - TransparentFX
