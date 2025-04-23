@@ -17,8 +17,6 @@ public class PlayerAttack : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            Debug.Log("z");
-
             playerAnim.SetTrigger("Z");
 
             isAttack = true;
@@ -29,8 +27,6 @@ public class PlayerAttack : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            Debug.Log("x");
-
             playerAnim.SetTrigger("X");
 
             isAttack = true;
@@ -42,7 +38,7 @@ public class PlayerAttack : MonoBehaviour
         isAttack = false;
     }
 
-    public void NoMoreAttack()
+    public void NoMoreAttack() // TODO: IDLE 혹은 RUN 애니메이션으로 가기 전 공격 애니메이션에 바인딩해야 할 함수
     {
         playerAnim.ResetTrigger("Z");
 
@@ -52,14 +48,10 @@ public class PlayerAttack : MonoBehaviour
     public void SetDamage(AnimationEvent myEvent)
     {
         swordStat.damage = myEvent.intParameter;
-
-        Debug.Log(swordStat.damage);
     }
 
     public void SetDownCount(AnimationEvent myEvent)
     {
         swordStat.downCount = myEvent.intParameter;
-
-        Debug.Log(swordStat.downCount);
     }
 }

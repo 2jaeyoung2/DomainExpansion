@@ -80,8 +80,10 @@ public class DashState : IPlayerState
 
     private IEnumerator ResetIsDash()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
 
         player.isDash = false;
+
+        Debug.Log(player.isDash);
     }
 }
