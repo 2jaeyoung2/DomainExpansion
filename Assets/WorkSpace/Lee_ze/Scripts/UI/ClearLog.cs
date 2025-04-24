@@ -1,8 +1,6 @@
-#if UNITY_EDITOR
 using System;
 using System.Reflection;
 using UnityEditor;
-#endif
 using UnityEngine;
 
 public class ClearLog : MonoBehaviour
@@ -14,11 +12,11 @@ public class ClearLog : MonoBehaviour
     {
         if (clearConsoleDelegate == null)
         {
-            // UnityEditor.LogEntries Å¸ÀÔ ¾ò±â
+            // UnityEditor.LogEntries Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½
             var logEntries = Type.GetType("UnityEditor.LogEntries, UnityEditor.dll");
-            // Clear ¸Þ¼­µå Á¤º¸ °¡Á®¿À±â
+            // Clear ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             var clearMethod = logEntries?.GetMethod("Clear", BindingFlags.Static | BindingFlags.Public);
-            // µ¨¸®°ÔÀÌÆ® Ä³½Ì
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Ä³ï¿½ï¿½
             clearConsoleDelegate = (Action)Delegate.CreateDelegate(typeof(Action), clearMethod);
         }
     }
@@ -29,7 +27,7 @@ public class ClearLog : MonoBehaviour
 #if UNITY_EDITOR
         clearConsoleDelegate?.Invoke();
 #else
-        Debug.LogWarning("ÄÜ¼Ö Áö¿ì±â´Â ¿¡µðÅÍ¿¡¼­¸¸ µ¿ÀÛÇÕ´Ï´Ù.");
+        Debug.LogWarning("ï¿½Ü¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.");
 #endif
     }
 }

@@ -16,9 +16,11 @@ public class MatchMaker : MonoBehaviourPunCallbacks
 
     Coroutine matchingCor;
     Coroutine matchFoundCor;
+
     int matchSec = 0;
     int matchMin = 0;
     int matchFoundCountdown = 5;
+    public string myMapInfo = "";
 
     private void Start()
     {
@@ -77,6 +79,7 @@ public class MatchMaker : MonoBehaviourPunCallbacks
     public void FoundMatch()
     {
         matchFoundPopUp.SetActive(true);
+        photonView.RPC("SendMapData", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.ActorNumber, myMapInfo);
         matchFoundCor = StartCoroutine(MatchCountDownCor());
     }
 
@@ -97,6 +100,12 @@ public class MatchMaker : MonoBehaviourPunCallbacks
         {
             StartGame();
         }
+    }
+
+    [PunRPC]
+    public void SendMapData(int id, string map)
+    {
+        IngameManager.Instance.SetMapDict(id, map);
     }
 
     public void StartGame()

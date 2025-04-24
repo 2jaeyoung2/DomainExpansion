@@ -350,6 +350,5 @@ public class MapMaker : MonoBehaviour
     public void SetTileList(string toMap)
     {
         tileList = JsonUtility.FromJson<Serialization<TileInfo>>(toMap).map;
-        DisplayMap();
     }
 }

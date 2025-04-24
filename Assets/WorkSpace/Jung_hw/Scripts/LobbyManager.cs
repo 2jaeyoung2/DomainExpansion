@@ -9,6 +9,7 @@ public class LobbyManager : MonoBehaviour
 {
     [SerializeField] Animation uiAnim;
     [SerializeField] MapMaker mapMaker;
+    [SerializeField] MatchMaker matchMaker;
     DatabaseReference dbRef;
     FirebaseUser user;
     public List<string> anims;
@@ -47,8 +48,6 @@ public class LobbyManager : MonoBehaviour
 
     IEnumerator PostMap(string tiles)
     {
-        Debug.Log(tiles);
-
         var task = dbRef.Child("users").Child(user.UserId).Child("map").SetValueAsync(tiles);
 
         yield return new WaitUntil(predicate: () => task.IsCompleted);
@@ -56,6 +55,10 @@ public class LobbyManager : MonoBehaviour
         if(task.Exception != null)
         {
             Debug.LogWarning("Update Failed: " + task.Exception);
+        }
+        else
+        {
+            matchMaker.myMapInfo = tiles;
         }
     }
 
@@ -83,6 +86,8 @@ public class LobbyManager : MonoBehaviour
             DataSnapshot snapshot = task.Result;
             string toMap = snapshot.Child("map").Exists ? snapshot.Child("map").Value.ToString() : "";
             mapMaker.SetTileList(toMap);
+            mapMaker.DisplayMap();
+            matchMaker.myMapInfo = toMap;
         }
     }
 }
