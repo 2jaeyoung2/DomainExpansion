@@ -1,78 +1,149 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerView : MonoBehaviour
 {
-    public float scrollSpeed = 15f;
-
-    public float edgeThreshold = 5f; // 화면 가장자리로부터의 거리 (픽셀)
-
-    public float zoomSpeed = 10f; // 줌 속도
-
-    public float minZoom = 20f; // 최소 줌 레벨
-
-    public float maxZoom = 60f; // 최대 줌 레벨
-
-    public float zoomSmoothTime = 0.2f; // 줌 스무스 타임
+    [SerializeField]
+    private Camera mainCamera;
 
     [SerializeField]
-    private Camera cam;
+    private Transform playerPos;
 
-    private float targetZoom;
+    [Header("Camera Movement Settings")]
 
-    private float zoomVelocity = 0f;
+    [SerializeField]
+    private float cameraSpeed = 10f;
 
-    void Start()
+    [SerializeField]
+    private float edgePixel = 50f;
+
+    [Header("Movement Boundary")]
+
+    [SerializeField]
+    private Vector2 xLimit = new Vector2(-12f, 12f);
+
+    [SerializeField]
+    private Vector2 zLimit = new Vector2(-15f, 25f);
+
+    private Vector2 mousePos;
+
+    private Coroutine moveCamHorizontalCor = null;
+
+    private Coroutine moveCamVerticalCor = null;
+
+    public void OnMouseMove(InputAction.CallbackContext ctx)
     {
-        targetZoom = cam.fieldOfView; // 초기 줌 설정
+        mousePos = ctx.ReadValue<Vector2>();
+
+        // 만약 범위 안에 있으면 return;
+        if (IsInHorizontalBoundary() == true && IsInVerticalBoundary() == true)
+        {
+            return;
+        }
+
+        if (moveCamHorizontalCor == null)
+        {
+            moveCamHorizontalCor = StartCoroutine(MoveCamHorizontal(mousePos));
+        }
+
+        if (moveCamVerticalCor == null)
+        {
+            moveCamVerticalCor = StartCoroutine(MoveCamVertical(mousePos));
+        }
     }
 
-    void Update()
+    private IEnumerator MoveCamHorizontal(Vector2 mousePos)
     {
-        Vector3 pos = transform.position;
-
-        // 마우스 위치 확인
-        Vector2 mousePos = Input.mousePosition;
-
-        // 오른쪽 스크롤
-        if (mousePos.x >= Screen.width - edgeThreshold)
+        while (IsInHorizontalBoundary() == false)
         {
-            pos.x += scrollSpeed * Time.deltaTime;
+            Vector3 moveDir = Vector3.zero;
+
+            if (mousePos.x <= edgePixel)
+            {
+                moveDir += Vector3.left;
+            }
+
+            else if (mousePos.x >= Screen.width - edgePixel)
+            {
+                moveDir += Vector3.right;
+            }
+
+            Vector3 camPos = mainCamera.transform.position + moveDir.normalized * cameraSpeed * Time.deltaTime;
+
+            camPos.x = Mathf.Clamp(camPos.x, xLimit.x, xLimit.y);
+
+            camPos.z = Mathf.Clamp(camPos.z, zLimit.x, zLimit.y);
+
+            mainCamera.transform.position = camPos;
+
+            yield return null;
         }
 
-        // 왼쪽 스크롤
-        if (mousePos.x <= edgeThreshold)
+        moveCamHorizontalCor = null;
+    }
+
+    private IEnumerator MoveCamVertical(Vector2 mousePos)
+    {
+        while (IsInVerticalBoundary() == false)
         {
-            pos.x -= scrollSpeed * Time.deltaTime;
+            Vector3 moveDir = Vector3.zero;
+
+            if (mousePos.y <= edgePixel)
+            {
+                moveDir += Vector3.back;
+            }
+
+            else if (mousePos.y >= Screen.height - edgePixel)
+            {
+                moveDir += Vector3.forward;
+            }
+
+            Vector3 camPos = mainCamera.transform.position + moveDir.normalized * cameraSpeed * Time.deltaTime;
+
+            camPos.x = Mathf.Clamp(camPos.x, xLimit.x, xLimit.y);
+
+            camPos.z = Mathf.Clamp(camPos.z, zLimit.x, zLimit.y);
+
+            mainCamera.transform.position = camPos;
+
+            yield return null;
         }
 
-        // 위쪽 스크롤
-        if (mousePos.y >= Screen.height - edgeThreshold)
+        moveCamVerticalCor = null;
+    }
+
+    private bool IsInHorizontalBoundary()
+    {
+        return mousePos.x < Screen.width - edgePixel && mousePos.x > edgePixel;
+    }
+
+    private bool IsInVerticalBoundary()
+    {
+        return mousePos.y < Screen.height - edgePixel && mousePos.y > edgePixel;
+    }
+
+    public void OnToPlayer(InputAction.CallbackContext ctx) // 스페이스바 바인딩
+    {
+        if (ctx.phase == InputActionPhase.Started)
         {
-            pos.z += scrollSpeed * Time.deltaTime;
+            CamToPlayer();
         }
+    }
 
-        // 아래쪽 스크롤
-        if (mousePos.y <= edgeThreshold)
+    private void CamToPlayer() // 카메라를 플레이어 중심으로 이동
+    {
+        if (playerPos != null)
         {
-            pos.z -= scrollSpeed * Time.deltaTime;
+            Vector3 newPos = playerPos.position;
+
+            newPos.x = playerPos.position.x;
+
+            newPos.y = mainCamera.transform.position.y;
+
+            newPos.z = playerPos.position.z - 7f;
+
+            mainCamera.transform.position = newPos;
         }
-
-        // 카메라 위치 업데이트
-        transform.position = pos;
-
-        // 마우스 휠로 줌 인/아웃
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        if (scroll != 0.0f)
-        {
-            targetZoom -= scroll * zoomSpeed;
-
-            targetZoom = Mathf.Clamp(targetZoom, minZoom, maxZoom);
-        }
-
-        // 스무스 줌 업데이트
-        cam.fieldOfView = Mathf.SmoothDamp(cam.fieldOfView, targetZoom, ref zoomVelocity, zoomSmoothTime);
     }
 }

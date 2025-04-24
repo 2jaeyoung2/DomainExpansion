@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RunState : IPlayerState
@@ -40,10 +38,19 @@ public class RunState : IPlayerState
 
             return;
         }
+
+        if (player.isHit == true)
+        {
+            player.ChangeStateTo(new GetHitState());
+
+            return;
+        }
     }
 
     public void ExitState()
     {
+        player.agent.ResetPath();
+
         Debug.Log("run end");
     }
 }

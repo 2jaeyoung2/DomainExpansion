@@ -436,7 +436,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.53334343
-        functionName: OffDash
+        functionName: EndDash
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 4bc529d50d9b4884b807689fe0a1e60d, type: 3}
         floatParameter: 0

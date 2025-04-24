@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackState : IPlayerState
@@ -10,10 +8,14 @@ public class AttackState : IPlayerState
     {
         this.player = player;
 
-        if (this.player.agent.hasPath == true)
-        {
-            this.player.agent.ResetPath();
-        }
+        //if (this.player.agent.hasPath == true) // 공격 시작하면 가던 길을 멈춤
+        //{
+        //    this.player.agent.ResetPath();
+        //}
+
+        this.player.agent.speed = 0;
+
+        this.player.WeaponsOn();
 
         Debug.Log("attack start");
     }
@@ -23,40 +25,52 @@ public class AttackState : IPlayerState
 
 
         // ----> State Change
-        if (player.attackCheck.isAttack == false)
+        if (player.isDash == true)
         {
-            if (player.agent.hasPath == false)
-            {
-                player.ChangeStateTo(new IdleState());
+            player.ChangeStateTo(new DashState());
 
-                return;
-            }
-
-            if (player.agent.hasPath == true)
-            {
-                player.ChangeStateTo(new RunState());
-
-                return;
-            }
-
-            if (player.isDash == true)
-            {
-                player.ChangeStateTo(new DashState());
-
-                return;
-            }
+            return;
         }
-        
-        //if (player.isCancled == true)
-        //{
-        //    player.playerAnim.SetTrigger("ToIdle");
 
-        //    player.ChangeStateTo(new IdleState());
-        //}
+        if (player.isHit == true)
+        {
+            player.ChangeStateTo(new GetHitState());
+
+            return;
+        }
+
+        if (player.attackCheck.isAttack == true)
+        {
+            return; // 공격 중이라면 아래 코드 무시
+        }
+
+        if (player.agent.hasPath == true)
+        {
+            Debug.Log("A2R");
+            player.ChangeStateTo(new RunState());
+
+            return;
+        }
+
+        if (player.agent.hasPath == false)
+        {
+            Debug.Log("A2I");
+            player.ChangeStateTo(new IdleState());
+
+            return;
+        }
     }
 
     public void ExitState()
     {
+        player.WeaponsOff();
+
+        player.agent.speed = 5f;
+
+        player.playerAnim.ResetTrigger("Z");
+
+        player.playerAnim.ResetTrigger("X");
+
         Debug.Log("attack end");
     }
 }

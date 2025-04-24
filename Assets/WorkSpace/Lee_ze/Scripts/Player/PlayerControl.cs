@@ -4,9 +4,13 @@ using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using System;
+using Photon.Realtime;
 
 public class PlayerControl : MonoBehaviour
 {
+    public PlayerStatistics playerStats;
+
     private IPlayerState currentState;
 
     public MouseCursorPosition mousePos;
@@ -19,20 +23,30 @@ public class PlayerControl : MonoBehaviour
 
     public PlayerAttack attackCheck;
 
+    public GameObject[] swords;
 
-    Vector3 targetPos;
+    public GameObject coffin;
 
-    Vector3 direction;
 
-    public bool isCancled = false;
+    private Vector3 cursorPos;
+
+    public Vector3 direction;
+
+    private Coroutine rotationCor;
 
     public bool isDash = false;
+
+    public bool isHit = false;
+
+    public float dashCost = 1f; // 구르기 시 15cost
 
     private void Start()
     {
         PlayerNavMeshAgentSettings();
 
         mousePos.OnDirectionChanged += GoToDestination;
+
+        WeaponsOff();
 
         ChangeStateTo(new IdleState());
     }
@@ -71,10 +85,10 @@ public class PlayerControl : MonoBehaviour
             return;
         }
 
-        if (attackCheck.isAttack == true) // 공격 중일 때 이동 불가
-        {
-            return;
-        }
+        //if (attackCheck.isAttack == true) // 공격 중일 때 이동 불가
+        //{
+        //    return;
+        //}
 
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f) // agent의 목적지와 마우스 우클릭 위치 차이가 0.1보다 클 경우
         {
@@ -84,29 +98,44 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void SetPlayerRotation() // 이동하는 방향으로 rotate
+    public void SetPlayerRotation() // 이동하는 방향으로 rotate
     {
-        targetPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
+        cursorPos = new Vector3(mousePos.hit.point.x, transform.position.y, mousePos.hit.point.z);
 
-        direction = (targetPos - transform.position).normalized;
+        direction = (cursorPos - transform.position).normalized;
 
-        transform.rotation = Quaternion.LookRotation(direction);
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            if (rotationCor != null)
+            {
+                StopCoroutine(rotationCor);
+            }
+
+            rotationCor = StartCoroutine(RotateToDirection(targetRotation));
+        }
+    }
+
+    private IEnumerator RotateToDirection(Quaternion targetRotation) // 부드러운 회전
+    {
+        float speed = 30f;
+
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
+
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
     }
 
     public void OnStop(InputAction.CallbackContext ctx) // 'S' 바인딩
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            isCancled = true;
-
             agent.ResetPath();
-        }
-
-        if (ctx.phase == InputActionPhase.Canceled)
-        {
-            attackCheck.isAttack = false;
-
-            isCancled = false;
         }
     }
 
@@ -118,7 +147,10 @@ public class PlayerControl : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            isDash = true;
+            if (playerStats.PlayerCurrentStamina >= dashCost) // 스테미나가 15 이상일 때
+            {
+                isDash = true;
+            }
         }
     }
 
@@ -142,9 +174,31 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    public void OffDash() // 애니메이션 특정 프레임에 이벤트성 호출
+    public void EndDash() // 애니메이션 특정 프레임에 이벤트성 호출
     {
         isDash = false;
+    }
+
+    #endregion
+
+    #region 무기 관련 스크립트
+
+    // 공격 애니메이션 특정 프레임에 호출되는 이벤트 함수
+
+    public void WeaponsOn()
+    {
+        foreach (var sword in swords)
+        {
+            sword.GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    public void WeaponsOff()
+    {
+        foreach (var sword in swords)
+        {
+            sword.GetComponent<Collider>().enabled = false;
+        }
     }
 
     #endregion

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IdleState : IPlayerState
@@ -11,8 +9,6 @@ public class IdleState : IPlayerState
         this.player = player;
 
         player.playerAnim.SetBool("IsRun", false);
-
-        Debug.Log(this.player.isDash);
 
         Debug.Log("idle start");
     }
@@ -29,7 +25,7 @@ public class IdleState : IPlayerState
             return;
         }
 
-        if (player.attackCheck.isAttack == true) // АјАн state
+        if (player.attackCheck.isAttack == true)
         {
             player.ChangeStateTo(new AttackState());
 
@@ -39,6 +35,13 @@ public class IdleState : IPlayerState
         if (player.agent.hasPath == true)
         {
             player.ChangeStateTo(new RunState());
+
+            return;
+        }
+
+        if (player.isHit == true)
+        {
+            player.ChangeStateTo(new GetHitState());
 
             return;
         }
