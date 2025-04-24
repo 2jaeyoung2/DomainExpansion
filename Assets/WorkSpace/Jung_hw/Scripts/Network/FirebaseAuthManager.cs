@@ -38,6 +38,7 @@ public class FirebaseAuthManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Awake()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             var depStatus = task.Result;
@@ -107,12 +108,20 @@ public class FirebaseAuthManager : MonoBehaviourPunCallbacks
         else// 그렇지 않다면 로그인
         {
             user = LoginTask.Result.User; //유저 정보 기억
-            loginNotifyText.text = "";
-            idField.text = user.DisplayName;
-            loginNotifyText.color = successTextColor;
-            loginNotifyText.text = "로그인 완료, 반갑습니다 " + user.DisplayName + "님";
-            ConnectToServer();
+            PhotonNetwork.ConnectUsingSettings();
+            StartCoroutine(WaitForPhoton());
         }
+    }
+
+    IEnumerator WaitForPhoton()
+    {
+        yield return new WaitUntil(() => PhotonNetwork.IsConnected);
+        loginNotifyText.text = "";
+        idField.text = user.DisplayName;
+        loginNotifyText.color = successTextColor;
+        loginNotifyText.text = "로그인 완료, 반갑습니다 " + user.DisplayName + "님";
+        ConnectToServer();
+
     }
 
     public void Register()

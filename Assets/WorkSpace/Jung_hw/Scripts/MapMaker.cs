@@ -347,9 +347,9 @@ public class MapMaker : MonoBehaviour
         return json;
     }
 
-    public void SetTileList(List<TileInfo> tileInfos)
+    public void SetTileList(string toMap)
     {
-        tileList = tileInfos;
+        tileList = JsonUtility.FromJson<Serialization<TileInfo>>(toMap).map;
         DisplayMap();
     }
 }

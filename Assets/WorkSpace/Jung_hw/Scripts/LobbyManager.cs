@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
-public class LobbyUI : MonoBehaviour
+public class LobbyManager : MonoBehaviour
 {
     [SerializeField] Animation uiAnim;
     [SerializeField] MapMaker mapMaker;
@@ -82,7 +82,7 @@ public class LobbyUI : MonoBehaviour
         {
             DataSnapshot snapshot = task.Result;
             string toMap = snapshot.Child("map").Exists ? snapshot.Child("map").Value.ToString() : "";
-            mapMaker.SetTileList(JsonUtility.FromJson<Serialization<TileInfo>>(toMap).map);
+            mapMaker.SetTileList(toMap);
         }
     }
 }
