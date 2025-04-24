@@ -37,7 +37,7 @@ public class PlayerConditionUI : MonoBehaviour
 
         if (hpText != null)
         {
-            hpText.text = $"{currentHealth} / {maxHealth}";
+            hpText.text = $"{(int)currentHealth} / {(int)maxHealth}";
         }
     }
 
@@ -50,7 +50,7 @@ public class PlayerConditionUI : MonoBehaviour
 
         if (staminaText != null)
         {
-            staminaText.text = $"{currentStamina} / {maxStamina}";
+            staminaText.text = $"{(int)currentStamina} / {(int)maxStamina}";
         }
     }
 

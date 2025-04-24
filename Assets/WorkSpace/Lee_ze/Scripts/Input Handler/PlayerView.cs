@@ -123,7 +123,6 @@ public class PlayerView : MonoBehaviour
         return mousePos.y < Screen.height - edgePixel && mousePos.y > edgePixel;
     }
 
-
     public void OnToPlayer(InputAction.CallbackContext ctx) // 스페이스바 바인딩
     {
         if (ctx.phase == InputActionPhase.Started)

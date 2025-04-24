@@ -25,7 +25,7 @@ public class IdleState : IPlayerState
             return;
         }
 
-        if (player.attackCheck.isAttack == true) // АјАн state
+        if (player.attackCheck.isAttack == true)
         {
             player.ChangeStateTo(new AttackState());
 

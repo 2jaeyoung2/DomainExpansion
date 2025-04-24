@@ -450,7 +450,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 4
         messageOptions: 0
-      - time: 0.5970798
+      - time: 0.9615113
         functionName: IsAttackToFalse
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 64acd896ff1f80f44a90f6d5f29d3bad, type: 3}

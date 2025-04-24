@@ -437,27 +437,27 @@ ModelImporter:
       curves: []
       events:
       - time: 0
-        functionName: SetDamage
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 64acd896ff1f80f44a90f6d5f29d3bad, type: 3}
-        floatParameter: 0
-        intParameter: 7
-        messageOptions: 0
-      - time: 0
         functionName: SetDownCount
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 64acd896ff1f80f44a90f6d5f29d3bad, type: 3}
         floatParameter: 0
         intParameter: 6
         messageOptions: 0
-      - time: 0.5940367
+      - time: 0
+        functionName: SetDamage
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 64acd896ff1f80f44a90f6d5f29d3bad, type: 3}
+        floatParameter: 0
+        intParameter: 7
+        messageOptions: 0
+      - time: 0.512404
         functionName: IsAttackToFalse
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 64acd896ff1f80f44a90f6d5f29d3bad, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.61954606
+      - time: 0.54374427
         functionName: NoMoreAttack
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 64acd896ff1f80f44a90f6d5f29d3bad, type: 3}

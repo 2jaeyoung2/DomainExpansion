@@ -29,6 +29,6 @@ public class DeadState : IPlayerState
 
     private Vector3 CoffinPosition()
     {
-        return player.transform.position + Vector3.up * 30f;
+        return player.transform.position + Vector3.up * 15f;
     }
 }

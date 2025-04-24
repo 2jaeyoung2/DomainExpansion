@@ -127,7 +127,7 @@ public class PlayerStatistics : MonoBehaviour, IDamageable
         player.playerAnim.SetTrigger("Hit");
     }
 
-    public void GetDashDamage(int damage)
+    public void GetDashDamage(float damage)
     {
         PlayerCurrentHP -= damage;
 

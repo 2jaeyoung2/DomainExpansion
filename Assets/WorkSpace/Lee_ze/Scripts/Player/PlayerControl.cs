@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using System;
+using Photon.Realtime;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class PlayerControl : MonoBehaviour
 
     public bool isHit = false;
 
-    public float dashCost = 15; // 구르기 시 15cost
+    public float dashCost = 1f; // 구르기 시 15cost
 
     private void Start()
     {
@@ -84,10 +85,10 @@ public class PlayerControl : MonoBehaviour
             return;
         }
 
-        if (attackCheck.isAttack == true) // 공격 중일 때 이동 불가
-        {
-            return;
-        }
+        //if (attackCheck.isAttack == true) // 공격 중일 때 이동 불가
+        //{
+        //    return;
+        //}
 
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f) // agent의 목적지와 마우스 우클릭 위치 차이가 0.1보다 클 경우
         {
@@ -173,7 +174,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    public void OffDash() // 애니메이션 특정 프레임에 이벤트성 호출
+    public void EndDash() // 애니메이션 특정 프레임에 이벤트성 호출
     {
         isDash = false;
     }

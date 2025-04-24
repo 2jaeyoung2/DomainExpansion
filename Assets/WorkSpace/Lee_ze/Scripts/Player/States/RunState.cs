@@ -49,6 +49,8 @@ public class RunState : IPlayerState
 
     public void ExitState()
     {
+        player.agent.ResetPath();
+
         Debug.Log("run end");
     }
 }

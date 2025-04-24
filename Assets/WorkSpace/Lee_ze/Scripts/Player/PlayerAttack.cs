@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField]
-    private Animator playerAnim;
+    private PlayerControl player;
 
     [SerializeField]
     private Sword swordStat;
@@ -17,7 +17,13 @@ public class PlayerAttack : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            playerAnim.SetTrigger("Z");
+            if (player.isDash == true) return;
+
+            player.mousePos.TempGetMouseCursorPosition();
+
+            player.SetPlayerRotation();
+
+            player.playerAnim.SetTrigger("Z");
 
             isAttack = true;
         }
@@ -27,7 +33,13 @@ public class PlayerAttack : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            playerAnim.SetTrigger("X");
+            if (player.isDash == true) return;
+
+            player.mousePos.TempGetMouseCursorPosition();
+
+            player.SetPlayerRotation();
+
+            player.playerAnim.SetTrigger("X");
 
             isAttack = true;
         }
@@ -40,9 +52,9 @@ public class PlayerAttack : MonoBehaviour
 
     public void NoMoreAttack() // TODO: IDLE 혹은 RUN 애니메이션으로 가기 전 공격 애니메이션에 바인딩해야 할 함수
     {
-        playerAnim.ResetTrigger("Z");
+        player.playerAnim.ResetTrigger("Z");
 
-        playerAnim.ResetTrigger("X");
+        player.playerAnim.ResetTrigger("X");
     }
 
     public void SetDamage(AnimationEvent myEvent)
