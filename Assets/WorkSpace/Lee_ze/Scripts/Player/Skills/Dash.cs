@@ -8,28 +8,28 @@ public class Dash : ISkill
     public void ActiveThisSkill(PlayerControl player)
     {
         this.player = player;
-        Debug.Log(2);
-        if (this.player.playerStats.PlayerCurrentStamina < this.player.manaBreakCost) // 스테미나 부족하면 못 씀
+
+        if (this.player.playerStats.PlayerCurrentStamina < this.player.dashCost) // 스테미나 부족하면
         {
-            return;
+            return; // 나가기
         }
-        Debug.Log(3);
+
         this.player.isDash = true; // Dash state로 가는 트리거. 반드시 있어야 함.
-        Debug.Log(4);
+
         this.player.StartCoroutine(DashRoutine()); // Dash
-        Debug.Log(7);
+
         PayDashCost();
     }
 
     private IEnumerator DashRoutine()
     {
-        Debug.Log(5);
+
         player.playerCollider.enabled = false; // 구르기 시작할 때 콜라이더 끔.
 
         player.playerAnim.SetTrigger("IsDash"); // 구르기 애니메이션 시작.
 
         yield return player.StartCoroutine(OnDash());
-        Debug.Log(8);
+
         player.isDash = false; // Dash state 끝내는 트리거. 반드시 있어야 함.
 
         player.playerCollider.enabled = true; // 구르기 끝날 때 콜라이더 켬.
@@ -37,7 +37,6 @@ public class Dash : ISkill
 
     private IEnumerator OnDash() // Dash 한 만큼 이동하는 로직. Dash 애니메이션X
     {
-        Debug.Log(6);
         player.mousePos.TempGetMouseCursorPosition();
 
         player.SetPlayerRotation();

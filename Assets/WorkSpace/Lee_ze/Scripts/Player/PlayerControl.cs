@@ -69,6 +69,7 @@ public class PlayerControl : MonoBehaviour
         ChangeStateTo(new IdleState());
 
         // 여기에 ISkill[] 배열로 스킬 설정
+        C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
     }
 
     private void Update()
@@ -158,21 +159,6 @@ public class PlayerControl : MonoBehaviour
 
     #region 스킬 관련 스크립트
 
-    public void OnDash(InputAction.CallbackContext ctx) // 'Left Shift' 바인딩
-    {
-        if (ctx.phase == InputActionPhase.Started)
-        {
-            if (isDash == true)
-            {
-                return;
-            }
-            if (playerStats.PlayerCurrentStamina >= dashCost)
-            {
-                isDash = true;
-            }
-        }
-    }
-
     private void C_SetSkill(ISkill skillName)
     {
         skill[0] = skillName;
@@ -191,10 +177,6 @@ public class PlayerControl : MonoBehaviour
             {
                 return;
             }
-
-            C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
-
-            Debug.Log(1);
 
             skill[0].ActiveThisSkill(this);
         }
