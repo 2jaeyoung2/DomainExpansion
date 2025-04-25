@@ -2481,63 +2481,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
---- !u!1001 &1236036421
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3914050544830294969, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_Name
-      value: SM_Prop_Hanging_Weapon_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.3765028
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.36088622
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.5557623
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7663950077297228517, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b9dbb790d7d53b346a782e67f46503d6, type: 3}
 --- !u!1 &1268809175
 GameObject:
   m_ObjectHideFlags: 0
@@ -5295,7 +5238,19 @@ MonoBehaviour:
     m_ActionId: c55ae157-bfb6-47ee-b454-554e241819fd
     m_ActionName: PlayerMoves/Attack_X[/Keyboard/x]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6409097284501617015}
+        m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
+        m_MethodName: On_C_Skill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 14ca9390-c872-4d25-9877-62b571a718fb
     m_ActionName: PlayerMoves/Skill_C[/Keyboard/c]
   - m_PersistentCalls:
@@ -9656,4 +9611,3 @@ SceneRoots:
   - {fileID: 7121497997860734949}
   - {fileID: 2329423106968183379}
   - {fileID: 1493845600}
-  - {fileID: 1236036421}

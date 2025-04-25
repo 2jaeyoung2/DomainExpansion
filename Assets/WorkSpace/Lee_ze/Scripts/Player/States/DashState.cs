@@ -71,20 +71,40 @@ public class DashState : IPlayerState
         Debug.Log("dash end");
     }
 
+    private IEnumerator DashRoutine()
+    {
+        yield return player.StartCoroutine(Dash());
+
+        player.isDash = false;
+
+        player.playerCollider.enabled = true;
+    }
+
+    public IEnumerator Dash()
+    {
+        player.mousePos.TempGetMouseCursorPosition();
+
+        player.SetPlayerRotation();
+
+        float dashSpeed = 7f;
+
+        float timer = 0f;
+
+        while (timer < 0.7f)
+        {
+            player.transform.position += player.direction.normalized * dashSpeed * Time.deltaTime;
+
+            timer += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
     private void PayDashCost()
     {
         player.playerStats.UseStamina(player.dashCost);
 
         player.playerStats.GetDashDamage(player.playerStats.PlayerCurrentHP * 0.1f); // 대쉬 사용 시 자신 체력 -10(임의 수치)
-    }
-
-    private IEnumerator DashRoutine()
-    {
-        yield return player.StartCoroutine(player.Dash());
-
-        player.isDash = false;
-
-        player.playerCollider.enabled = true;
     }
 
     private void InitPlayerCondition()

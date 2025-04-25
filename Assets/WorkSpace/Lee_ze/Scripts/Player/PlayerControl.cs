@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using System;
 using Photon.Realtime;
+using Unity.VisualScripting;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -13,9 +14,11 @@ public class PlayerControl : MonoBehaviour
 
     private IPlayerState currentState;
 
-    private ISkill skill;
+    private ISkill[] skill = new ISkill[2];
 
     public MouseCursorPosition mousePos;
+
+
 
     public NavMeshAgent agent;
 
@@ -29,6 +32,7 @@ public class PlayerControl : MonoBehaviour
 
     public GameObject coffin;
 
+    
 
     private Vector3 cursorPos;
 
@@ -63,6 +67,8 @@ public class PlayerControl : MonoBehaviour
         WeaponsOff();
 
         ChangeStateTo(new IdleState());
+
+        // 여기에 ISkill[] 배열로 스킬 설정
     }
 
     private void Update()
@@ -150,38 +156,53 @@ public class PlayerControl : MonoBehaviour
 
     #endregion
 
-    #region Dash 관련 스크립트
+    #region 스킬 관련 스크립트
 
     public void OnDash(InputAction.CallbackContext ctx) // 'Left Shift' 바인딩
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            skill?.ActiveThisSkill(this); // << 이거 외엔 다 지울거임
-
-            //if (playerStats.PlayerCurrentStamina >= dashCost)
-            //{
-            //    isDash = true;
-            //}
+            if (isDash == true)
+            {
+                return;
+            }
+            if (playerStats.PlayerCurrentStamina >= dashCost)
+            {
+                isDash = true;
+            }
         }
     }
 
-    public IEnumerator Dash()
+    private void C_SetSkill(ISkill skillName)
     {
-        mousePos.TempGetMouseCursorPosition();
+        skill[0] = skillName;
+    }
 
-        SetPlayerRotation();
+    private void D_SetSkill(ISkill skillName)
+    {
+        skill[1] = skillName;
+    }
 
-        float dashSpeed = 7f;
-
-        float timer = 0f;
-
-        while (timer < 0.7f)
+    public void On_C_Skill(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Started)
         {
-            transform.position += direction.normalized * dashSpeed * Time.deltaTime;
+            if (isDash == true)
+            {
+                return;
+            }
 
-            timer += Time.deltaTime;
+            C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
 
-            yield return null;
+            skill[0].ActiveThisSkill(this);
+        }
+    }
+
+    public void On_D_Skill(InputAction.CallbackContext ctx)
+    {
+        if (ctx.phase == InputActionPhase.Started)
+        {
+
         }
     }
 
