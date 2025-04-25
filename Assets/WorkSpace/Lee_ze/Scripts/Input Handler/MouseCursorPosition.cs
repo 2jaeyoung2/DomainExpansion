@@ -22,7 +22,7 @@ public class MouseCursorPosition : MonoBehaviour
 
     private void Start()
     {
-        floorLayerMask = LayerMask.GetMask("FLOOR");
+        floorLayerMask = LayerMask.GetMask("FLOOR"); // FLOOR 레이어와만 충돌시키기 위한 레이어마스크 생성
     }
 
     private void Update()

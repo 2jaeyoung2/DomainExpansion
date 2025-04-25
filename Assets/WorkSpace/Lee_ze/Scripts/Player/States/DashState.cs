@@ -17,7 +17,7 @@ public class DashState : IPlayerState
 
         this.player.playerAnim.SetTrigger("IsDash");
 
-        PayDashCost();
+        PayDashCost(); // 나중에 제거 할 코드 + 함수도 같이
 
         Debug.Log("dash start");
     }

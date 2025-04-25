@@ -13,8 +13,6 @@ public class Sword : MonoBehaviour
         if (other.CompareTag("BLUE") == true) // TODO:임시태그 설정. 변경 필요
         {
             other.GetComponent<IDamageable>()?.GetDamage(damage, downCount);
-
-            Debug.Log(other.GetComponent<PlayerStatistics>()?.PlayerMaxHP);
         }
     }
 }

@@ -14,6 +14,8 @@ public class PlayerStatistics : MonoBehaviour, IDamageable
 
     private float playerMaxHP;
 
+    [SerializeField]
+    [Range(0, 200)]
     private float playerCurrentHP;
 
     private float playerMaxStamina;

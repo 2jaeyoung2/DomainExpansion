@@ -13,6 +13,8 @@ public class PlayerControl : MonoBehaviour
 
     private IPlayerState currentState;
 
+    private ISkill skill;
+
     public MouseCursorPosition mousePos;
 
     public NavMeshAgent agent;
@@ -34,11 +36,23 @@ public class PlayerControl : MonoBehaviour
 
     private Coroutine rotationCor;
 
+
+    // V 플레이어 상태
+
+    public bool isDead = false;
+
+    public bool isDown = false;
+
     public bool isDash = false;
 
     public bool isHit = false;
 
-    public float dashCost = 1f; // 구르기 시 15cost
+
+    // V 스킬 코스트
+
+    public float dashCost = 1f;
+
+    public float manaBreakCost = 40;
 
     private void Start()
     {
@@ -80,16 +94,11 @@ public class PlayerControl : MonoBehaviour
 
     private void GoToDestination() // 마우스 우클릭 할 때 호출 됨(observer pattern 사용)
     {
-        if (isDash == true) // 구르기 중일 때 이동 불가
+        if (isDash == true || isHit == true || isDead == true || isDown == true) // 구르기 중, 피격 시, 사망 시, 다운 시 이동 불가
         {
             return;
         }
-
-        //if (attackCheck.isAttack == true) // 공격 중일 때 이동 불가
-        //{
-        //    return;
-        //}
-
+        
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f) // agent의 목적지와 마우스 우클릭 위치 차이가 0.1보다 클 경우
         {
             SetPlayerRotation();
@@ -119,7 +128,7 @@ public class PlayerControl : MonoBehaviour
 
     private IEnumerator RotateToDirection(Quaternion targetRotation) // 부드러운 회전
     {
-        float speed = 30f;
+        float speed = 25f;
 
         while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
         {
@@ -147,10 +156,12 @@ public class PlayerControl : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            if (playerStats.PlayerCurrentStamina >= dashCost) // 스테미나가 15 이상일 때
-            {
-                isDash = true;
-            }
+            skill?.ActiveThisSkill(this); // << 이거 외엔 다 지울거임
+
+            //if (playerStats.PlayerCurrentStamina >= dashCost)
+            //{
+            //    isDash = true;
+            //}
         }
     }
 

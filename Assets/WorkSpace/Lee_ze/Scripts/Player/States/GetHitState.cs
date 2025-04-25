@@ -10,6 +10,8 @@ public class GetHitState : IPlayerState
     {
         this.player = player;
 
+        this.player.agent.isStopped = true;
+
         Debug.Log("gethit start");
     }
 
@@ -29,9 +31,18 @@ public class GetHitState : IPlayerState
 
         if (player.isHit == false)
         {
+            player.agent.isStopped = false;
+
             if (player.agent.hasPath == false)
             {
                 player.ChangeStateTo(new IdleState());
+
+                return;
+            }
+
+            if (player.agent.hasPath == true)
+            {
+                player.ChangeStateTo(new RunState());
 
                 return;
             }

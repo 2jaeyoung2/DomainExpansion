@@ -10,6 +10,8 @@ public class DownState : IPlayerState
     {
         this.player = player;
 
+        this.player.isDown = true;
+
         this.player.playerCollider.enabled = false; // 쓰러질 때 콜라이더 끄기
 
         this.player.playerAnim.SetTrigger("Down");
@@ -24,6 +26,8 @@ public class DownState : IPlayerState
 
     public void ExitState()
     {
+        player.isDown = false;
+
         player.isHit = false;
 
         player.playerCollider.enabled = true; // 콜라이더 켜기

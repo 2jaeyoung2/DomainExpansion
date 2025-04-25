@@ -10,12 +10,17 @@ public class ManaBreak : ISkill
     {
         this.player = player;
 
+        if (player.playerStats.PlayerCurrentStamina < player.manaBreakCost) // 스테미나 부족하면 못 씀
+        {
+            return;
+        }
+
         OnManaBreak();
     }
 
     private void OnManaBreak()
     {
-        player.playerStats.PlayerCurrentStamina -= 40;
+        player.playerStats.PlayerCurrentStamina -= player.manaBreakCost;
 
         player.ChangeStateTo(new DownState());
     }

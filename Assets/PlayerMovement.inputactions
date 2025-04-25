@@ -49,6 +49,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Skill_C",
+                    "type": "Button",
+                    "id": "14ca9390-c872-4d25-9877-62b571a718fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill_D",
+                    "type": "Button",
+                    "id": "8287d1ae-0c62-4dfe-80e8-d147713d2b2c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -106,32 +124,26 @@
                     "action": "Attack_X",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "CameraView",
-            "id": "75fe4bb9-b31e-4dd3-8bd1-7f4b1d45d669",
-            "actions": [
-                {
-                    "name": "ToPlayer",
-                    "type": "Button",
-                    "id": "f788d6ee-19d5-454f-a6d9-b92373ec9b48",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "6e541999-e7f4-46a8-a983-8964beadab6e",
-                    "path": "<Keyboard>/space",
+                    "id": "05811a3a-6a21-46d0-963c-a3a40413e412",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ToPlayer",
+                    "action": "Skill_C",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23d343fb-5846-4b0f-9c17-86210e652fec",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill_D",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
