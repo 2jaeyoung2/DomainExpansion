@@ -194,6 +194,8 @@ public class PlayerControl : MonoBehaviour
 
             C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
 
+            Debug.Log(1);
+
             skill[0].ActiveThisSkill(this);
         }
     }
