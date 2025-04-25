@@ -2731,12 +2731,16 @@ MonoBehaviour:
   isRight: 0
   baseObj: {fileID: 7081141507236371305, guid: 54f8f8b88ab8a62409cdb542014fd9de, type: 3}
   startPos: {fileID: 1438342371}
+  placeables: {fileID: 11400000, guid: 17f8d1837d3d97c4c8236093eaca6baa, type: 2}
   tiles:
-  - {fileID: 1170563866491720404, guid: b046f796486d5754da042c0e14c37c9f, type: 3}
-  - {fileID: 2435902692647194481, guid: 6dad268b43dd6c643bad14242699bfd2, type: 3}
-  - {fileID: 1885804369147164263, guid: 1957420a98601e54bacbd342f0a0541b, type: 3}
-  - {fileID: 9083404468813136626, guid: 4f9c5bc04478e7c4d8ba4749b8ed63ec, type: 3}
-  placingTiles: []
+  - placeable: {fileID: 0}
+    stock: 0
+  - placeable: {fileID: 0}
+    stock: 0
+  - placeable: {fileID: 0}
+    stock: 0
+  - placeable: {fileID: 0}
+    stock: 0
   canPlaceMat: {fileID: 2100000, guid: 2989e94dddd9aa7449c49ff4402a0420, type: 2}
   cannotPlaceMat: {fileID: 2100000, guid: 4a688e88f3a4df14691f263c3dbe14a3, type: 2}
   hor: 5
