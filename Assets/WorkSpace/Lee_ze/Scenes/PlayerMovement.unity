@@ -323,6 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousHitPoint: {x: 0, y: 0, z: 0}
   isRayOn: 0
+  cursorPointer: {fileID: 3748888973771779557, guid: a7e739974f987e442a9d1115970fecf4, type: 3}
 --- !u!4 &110842127
 Transform:
   m_ObjectHideFlags: 0
@@ -5189,22 +5190,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e9a5314e-c9cc-4ce7-aad4-cd7aa11922dd
     m_ActionName: PlayerMoves/Stop[/Keyboard/s]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6409097284501617015}
-        m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
-        m_MethodName: OnDash
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 4289be60-caa5-4e1a-905b-5af47b0131da
-    m_ActionName: PlayerMoves/Dash[/Keyboard/leftShift]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3944797930191813757}

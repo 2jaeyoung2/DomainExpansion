@@ -10,13 +10,17 @@ public class DownState : IPlayerState
     {
         this.player = player;
 
-        this.player.isDown = true;
+        this.player.agent.isStopped = true;
 
         this.player.playerCollider.enabled = false; // 쓰러질 때 콜라이더 끄기
 
-        this.player.playerAnim.SetTrigger("Down");
+        InitPlayerCondition();
+
+        this.player.playerAnim.SetTrigger("Down"); // 쓰러지는 애니메이션
 
         this.player.StartCoroutine(Recovery());
+
+        Debug.Log("down");
     }
 
     public void UpdateState()
@@ -26,6 +30,8 @@ public class DownState : IPlayerState
 
     public void ExitState()
     {
+        player.agent.isStopped = false;
+
         player.isDown = false;
 
         player.isHit = false;
@@ -43,11 +49,29 @@ public class DownState : IPlayerState
         yield return new WaitUntil(() => 
         player.playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Fall down_End"));
 
-        // 시작됐다면 애니메이션이 끝 날 때 까지 기다린 뒤에
-        yield return new WaitUntil(() => 
-        player.playerAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f);
 
-        // Idle로 이동
-        player.ChangeStateTo(new IdleState());
+        // ----> State Change
+        if (player.agent.hasPath == true)
+        {
+            player.ChangeStateTo(new RunState());
+        }
+
+        if (player.agent.hasPath == false)
+        {
+            player.ChangeStateTo(new IdleState());
+        }
+    }
+
+    private void InitPlayerCondition()
+    {
+        player.isDown = true;
+
+        player.isDash = false;
+
+        player.isHit = false;
+
+        player.attackCheck.isAttack = false;
+
+        player.playerAnim.SetBool("IsRun", false);
     }
 }

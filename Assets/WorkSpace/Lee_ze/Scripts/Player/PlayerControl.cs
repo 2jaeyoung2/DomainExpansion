@@ -56,7 +56,7 @@ public class PlayerControl : MonoBehaviour
 
     public float dashCost = 1f;
 
-    public float manaBreakCost = 40;
+    public float manaBreakCost = 4;
 
     private void Start()
     {
@@ -70,6 +70,8 @@ public class PlayerControl : MonoBehaviour
 
         // 여기에 ISkill[] 배열로 스킬 설정
         C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
+
+        D_SetSkill(new ManaBreak());
     }
 
     private void Update()
@@ -101,14 +103,17 @@ public class PlayerControl : MonoBehaviour
 
     private void GoToDestination() // 마우스 우클릭 할 때 호출 됨(observer pattern 사용)
     {
-        if (isDash == true || isHit == true || isDead == true || isDown == true) // 구르기 중, 피격 시, 사망 시, 다운 시 이동 불가
+        if (isDash == true || isHit == true || isDead == true) // 구르기 중, 피격 시, 사망 시, 다운 시 이동 불가
         {
             return;
         }
         
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f) // agent의 목적지와 마우스 우클릭 위치 차이가 0.1보다 클 경우
         {
-            SetPlayerRotation();
+            if (isDown == false)
+            {
+                SetPlayerRotation();
+            }
 
             agent.SetDestination(mousePos.hit.point);
         }
@@ -186,7 +191,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-
+            skill[1].ActiveThisSkill(this);
         }
     }
 
