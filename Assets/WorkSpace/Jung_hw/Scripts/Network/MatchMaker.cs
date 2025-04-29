@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -82,9 +83,12 @@ public class MatchMaker : MonoBehaviourPunCallbacks
         matchFoundPopUp.SetActive(true);
         photonView.RPC("SendMapData", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.ActorNumber, myMapInfo);
         photonView.RPC("SendSpawnPoint", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.ActorNumber, mapMaker.spawnLoc);
-        foreach(var player in PhotonNetwork.CurrentRoom.Players)
+        if(PhotonNetwork.IsMasterClient)
         {
-            GameManager.Instance.SetId(player.Value.ActorNumber);
+            foreach (var player in PhotonNetwork.CurrentRoom.Players)
+            {
+                photonView.RPC("SetTeam", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.ActorNumber);
+            }
         }
         matchFoundCor = StartCoroutine(MatchCountDownCor());
     }
@@ -118,6 +122,12 @@ public class MatchMaker : MonoBehaviourPunCallbacks
     public void SendSpawnPoint(int id, int index)
     {
         GameManager.Instance.SetSpawnPoint(id, index);
+    }
+
+    [PunRPC]
+    public void SetTeam(int id)
+    {
+        GameManager.Instance.SetId(id);
     }
 
     public void StartGame()
