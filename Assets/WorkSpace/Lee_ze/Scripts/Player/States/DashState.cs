@@ -9,15 +9,11 @@ public class DashState : IPlayerState
     {
         this.player = player;
 
-        InitPlayerCondition();
-
         this.player.playerCollider.enabled = false; // 구를 때 콜라이더 끄기
-
-        this.player.StartCoroutine(DashRoutine());
 
         this.player.playerAnim.SetTrigger("IsDash");
 
-        PayDashCost();
+        InitPlayerCondition();
 
         Debug.Log("dash start");
     }
@@ -66,25 +62,9 @@ public class DashState : IPlayerState
             player.playerAnim.SetBool("IsRun", true);
         }
 
-        player.playerCollider.enabled = true; // 콜라이더 켜기
+        player.playerCollider.enabled = true; // 구르기 끝나면 콜라이더 켜기
 
         Debug.Log("dash end");
-    }
-
-    private void PayDashCost()
-    {
-        player.playerStats.UseStamina(player.dashCost);
-
-        player.playerStats.GetDashDamage(player.playerStats.PlayerCurrentHP * 0.1f); // 대쉬 사용 시 자신 체력 -10(임의 수치)
-    }
-
-    private IEnumerator DashRoutine()
-    {
-        yield return player.StartCoroutine(player.Dash());
-
-        player.isDash = false;
-
-        player.playerCollider.enabled = true;
     }
 
     private void InitPlayerCondition()

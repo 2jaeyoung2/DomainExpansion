@@ -8,11 +8,6 @@ public class AttackState : IPlayerState
     {
         this.player = player;
 
-        //if (this.player.agent.hasPath == true) // 공격 시작하면 가던 길을 멈춤
-        //{
-        //    this.player.agent.ResetPath();
-        //}
-
         this.player.agent.speed = 0;
 
         this.player.WeaponsOn();

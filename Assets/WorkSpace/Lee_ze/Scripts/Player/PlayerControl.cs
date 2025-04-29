@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 using UnityEngine.InputSystem.HID;
 using System;
 using Photon.Realtime;
+using Unity.VisualScripting;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : MonoBehaviourPun
 {
     public PlayerStatistics playerStats;
 
     private IPlayerState currentState;
 
+    private ISkill[] skill = new ISkill[2];
+
     public MouseCursorPosition mousePos;
+
+
 
     public NavMeshAgent agent;
 
@@ -27,6 +33,7 @@ public class PlayerControl : MonoBehaviour
 
     public GameObject coffin;
 
+    
 
     private Vector3 cursorPos;
 
@@ -34,11 +41,23 @@ public class PlayerControl : MonoBehaviour
 
     private Coroutine rotationCor;
 
+
+    // V 플레이어 상태
+
+    public bool isDead = false;
+
+    public bool isDown = false;
+
     public bool isDash = false;
 
     public bool isHit = false;
 
-    public float dashCost = 1f; // 구르기 시 15cost
+
+    // V 스킬 코스트
+
+    public float dashCost = 1f;
+
+    public float manaBreakCost = 4;
 
     private void Start()
     {
@@ -49,6 +68,11 @@ public class PlayerControl : MonoBehaviour
         WeaponsOff();
 
         ChangeStateTo(new IdleState());
+
+        // 여기에 ISkill[] 배열로 스킬 설정
+        C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
+
+        D_SetSkill(new ManaBreak());
     }
 
     private void Update()
@@ -80,19 +104,22 @@ public class PlayerControl : MonoBehaviour
 
     private void GoToDestination() // 마우스 우클릭 할 때 호출 됨(observer pattern 사용)
     {
-        if (isDash == true) // 구르기 중일 때 이동 불가
+        if (photonView.IsMine == false)
         {
             return;
         }
 
-        //if (attackCheck.isAttack == true) // 공격 중일 때 이동 불가
-        //{
-        //    return;
-        //}
-
+        if (isDash == true || isHit == true || isDead == true) // 구르기 중, 피격 시, 사망 시, 다운 시 이동 불가
+        {
+            return;
+        }
+        
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f) // agent의 목적지와 마우스 우클릭 위치 차이가 0.1보다 클 경우
         {
-            SetPlayerRotation();
+            if (isDown == false) // 넘어졌을 땐 방향 안돌림
+            {
+                SetPlayerRotation();
+            }
 
             agent.SetDestination(mousePos.hit.point);
         }
@@ -119,7 +146,7 @@ public class PlayerControl : MonoBehaviour
 
     private IEnumerator RotateToDirection(Quaternion targetRotation) // 부드러운 회전
     {
-        float speed = 30f;
+        float speed = 25f;
 
         while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
         {
@@ -141,36 +168,36 @@ public class PlayerControl : MonoBehaviour
 
     #endregion
 
-    #region Dash 관련 스크립트
+    #region 스킬 관련 스크립트
 
-    public void OnDash(InputAction.CallbackContext ctx) // 'Left Shift' 바인딩
+    private void C_SetSkill(ISkill skillName)
+    {
+        skill[0] = skillName;
+    }
+
+    private void D_SetSkill(ISkill skillName)
+    {
+        skill[1] = skillName;
+    }
+
+    public void On_C_Skill(InputAction.CallbackContext ctx)
     {
         if (ctx.phase == InputActionPhase.Started)
         {
-            if (playerStats.PlayerCurrentStamina >= dashCost) // 스테미나가 15 이상일 때
+            if (isDash == true)
             {
-                isDash = true;
+                return;
             }
+
+            skill[0].ActiveThisSkill(this);
         }
     }
 
-    public IEnumerator Dash()
+    public void On_D_Skill(InputAction.CallbackContext ctx)
     {
-        mousePos.TempGetMouseCursorPosition();
-
-        SetPlayerRotation();
-
-        float dashSpeed = 7f;
-
-        float timer = 0f;
-
-        while (timer < 0.7f)
+        if (ctx.phase == InputActionPhase.Started)
         {
-            transform.position += direction.normalized * dashSpeed * Time.deltaTime;
-
-            timer += Time.deltaTime;
-
-            yield return null;
+            skill[1].ActiveThisSkill(this);
         }
     }
 

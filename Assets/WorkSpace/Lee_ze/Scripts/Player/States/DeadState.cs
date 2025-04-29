@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DeadState : IPlayerState
@@ -8,13 +9,15 @@ public class DeadState : IPlayerState
     {
         this.player = player;
 
+        this.player.isDead = true;
+
         Debug.Log("Dead state");
 
         this.player.playerCollider.enabled = false;
 
-        this.player.playerAnim.SetTrigger("Down");
+        this.player.playerAnim.SetTrigger("Dead");
 
-        GameObject.Instantiate(player.coffin, CoffinPosition(), player.transform.rotation);
+        this.player.StartCoroutine(DropCoffin());
     }
 
     public void UpdateState()
@@ -25,6 +28,13 @@ public class DeadState : IPlayerState
     public void ExitState()
     {
 
+    }
+
+    private IEnumerator DropCoffin()
+    {
+        yield return new WaitForSeconds(2f);
+
+        GameObject.Instantiate(player.coffin, CoffinPosition(), player.transform.rotation);
     }
 
     private Vector3 CoffinPosition()
