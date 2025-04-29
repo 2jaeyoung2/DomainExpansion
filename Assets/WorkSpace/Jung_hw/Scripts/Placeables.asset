@@ -21,3 +21,6 @@ MonoBehaviour:
     stock: 5
   - placeable: {fileID: 9083404468813136626, guid: 4f9c5bc04478e7c4d8ba4749b8ed63ec, type: 3}
     stock: 5
+  - placeable: {fileID: 2652930607702510079, guid: b250a1e01cad30b428c7d3905932413f, type: 3}
+    stock: 1
+  spawnIndex: 4

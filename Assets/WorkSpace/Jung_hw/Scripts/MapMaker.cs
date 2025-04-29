@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
@@ -83,6 +84,8 @@ public class MapMaker : MonoBehaviour
     Ray ray;
     RaycastHit hit;
     Vector3 placeRot = new Vector3(0, 15, 0); //회전간격
+
+    public int spawnLoc = 0;
 
     // Start is called before the first frame update
     void Awake()
@@ -282,14 +285,17 @@ public class MapMaker : MonoBehaviour
         {
             if (tileList[i].tileId != 0)
             {
-                GameObject placed = Instantiate(tiles[tileList[i].tileId - 1].placeable, startPos.transform.GetChild(i).GetChild(0));
-                placed.transform.rotation = Quaternion.Euler(tileList[i].tileRot);
-                placed.name = tiles[tileList[i].tileId - 1].placeable.name;
-
-                Vector3 height = new Vector3(0, fallHeight, 0);
-                if (startPos.GetChild(i).GetChild(0).childCount > 0)
+                if (tileList[i].tileId - 1 != placeables.spawnIndex)
                 {
-                    startPos.GetChild(i).GetChild(0).GetChild(0).transform.localPosition += height;
+                    GameObject placed = Instantiate(tiles[tileList[i].tileId - 1].placeable, startPos.transform.GetChild(i).GetChild(0));
+                    placed.transform.rotation = Quaternion.Euler(tileList[i].tileRot);
+                    placed.name = tiles[tileList[i].tileId - 1].placeable.name;
+
+                    Vector3 height = new Vector3(0, fallHeight, 0);
+                    if (startPos.GetChild(i).GetChild(0).childCount > 0)
+                    {
+                        startPos.GetChild(i).GetChild(0).GetChild(0).transform.localPosition += height;
+                    }
                 }
             }
         }
@@ -309,6 +315,11 @@ public class MapMaker : MonoBehaviour
                 placed.name = tiles[selected].placeable.name;
 
                 tiles[tileList[i].tileId - 1] = new Placeables.Placeable(tiles[tileList[i].tileId - 1].placeable, tiles[tileList[i].tileId - 1].stock - 1);
+
+                if (tileList[i].tileId - 1 == placeables.spawnIndex)
+                {
+                    spawnLoc = i;
+                }
             }
         }
     }

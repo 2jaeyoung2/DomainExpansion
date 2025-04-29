@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class MatchMaker : MonoBehaviourPunCallbacks
 {
+    [SerializeField] MapMaker mapMaker;
     [SerializeField] TMP_Text nicknameText;
 
     [SerializeField] GameObject matchingPopUp;
@@ -80,6 +81,11 @@ public class MatchMaker : MonoBehaviourPunCallbacks
     {
         matchFoundPopUp.SetActive(true);
         photonView.RPC("SendMapData", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.ActorNumber, myMapInfo);
+        photonView.RPC("SendSpawnPoint", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.ActorNumber, mapMaker.spawnLoc);
+        foreach(var player in PhotonNetwork.CurrentRoom.Players)
+        {
+            GameManager.Instance.SetId(player.Value.ActorNumber);
+        }
         matchFoundCor = StartCoroutine(MatchCountDownCor());
     }
 
@@ -105,7 +111,13 @@ public class MatchMaker : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SendMapData(int id, string map)
     {
-        IngameManager.Instance.SetMapDict(id, map);
+        GameManager.Instance.SetMapDict(id, map);
+    }
+
+    [PunRPC] 
+    public void SendSpawnPoint(int id, int index)
+    {
+        GameManager.Instance.SetSpawnPoint(id, index);
     }
 
     public void StartGame()

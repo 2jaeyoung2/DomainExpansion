@@ -1,40 +1,22 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class IngameManager : MonoBehaviour
 {
-    public static IngameManager Instance;
+    [SerializeField] MapManager mapManager;
+    [SerializeField] GameObject playerObj;
 
-    Dictionary<int, string> maps;
-
-    private void Awake()
+    void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (Instance != null)
-        {
-            Destroy(gameObject);
-        }
-    }
+        Debug.Log("r: " + GameManager.Instance.GetSpawnPoint(GameManager.Instance.players[0]) +
+            " b: " + GameManager.Instance.GetSpawnPoint(GameManager.Instance.players[1]));
+        //진짜 구린데 이거 어캄
+        Instantiate(playerObj, mapManager.leftMap.transform.GetChild(GameManager.Instance.GetSpawnPoint(GameManager.Instance.players[0]))
+            .GetChild(0).position, Quaternion.identity); //레드
 
-    private void Start()
-    {
-        maps = new();
-    }
+        Instantiate(playerObj, mapManager.rightMap.transform.GetChild(GameManager.Instance.GetSpawnPoint(GameManager.Instance.players[1]))
+            .GetChild(0).position, Quaternion.identity); //블루
 
-    public void SetMapDict(int id, string map)
-    {
-        Debug.Log(id + ": " + map);
-        maps.Add(id, map);
-    }
-
-    public Dictionary<int, string> GetMapData()
-    {
-        return maps;
     }
 }

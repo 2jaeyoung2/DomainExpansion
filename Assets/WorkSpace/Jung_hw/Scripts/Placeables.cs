@@ -22,4 +22,5 @@ public class Placeables : ScriptableObject
 
     public List<Placeable> placeableList;
 
+    public int spawnIndex;
 }
