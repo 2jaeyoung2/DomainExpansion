@@ -154,11 +154,11 @@ public class PlayerView : MonoBehaviourPun
         {
             Vector3 newPos = playerPos.position;
 
-            newPos.x = playerPos.position.x;
+            newPos.x = playerPos.position.x + 10f;
 
             newPos.y = mainCamera.transform.position.y;
 
-            newPos.z = playerPos.position.z - 7f;
+            newPos.z = playerPos.position.z;
 
             mainCamera.transform.position = newPos;
         }
