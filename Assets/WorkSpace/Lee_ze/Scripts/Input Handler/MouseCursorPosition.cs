@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
-public class MouseCursorPosition : MonoBehaviour
+public class MouseCursorPosition : MonoBehaviourPun
 {
     public event Action OnDirectionChanged;
 
@@ -41,6 +38,11 @@ public class MouseCursorPosition : MonoBehaviour
 
     public void OnMouseRightButtonClick(InputAction.CallbackContext ctx) // '마우스 우클릭' 바인딩
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (ctx.phase == InputActionPhase.Started)
         {
             tempCursorPointer.SetActive(true);

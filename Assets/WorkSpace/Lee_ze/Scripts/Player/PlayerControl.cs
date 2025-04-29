@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 using UnityEngine.InputSystem.HID;
 using System;
 using Photon.Realtime;
 using Unity.VisualScripting;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : MonoBehaviourPun
 {
     public PlayerStatistics playerStats;
 
@@ -103,6 +104,11 @@ public class PlayerControl : MonoBehaviour
 
     private void GoToDestination() // 마우스 우클릭 할 때 호출 됨(observer pattern 사용)
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (isDash == true || isHit == true || isDead == true) // 구르기 중, 피격 시, 사망 시, 다운 시 이동 불가
         {
             return;
@@ -110,7 +116,7 @@ public class PlayerControl : MonoBehaviour
         
         if (Vector3.Distance(agent.destination, mousePos.hit.point) > 0.1f) // agent의 목적지와 마우스 우클릭 위치 차이가 0.1보다 클 경우
         {
-            if (isDown == false)
+            if (isDown == false) // 넘어졌을 땐 방향 안돌림
             {
                 SetPlayerRotation();
             }

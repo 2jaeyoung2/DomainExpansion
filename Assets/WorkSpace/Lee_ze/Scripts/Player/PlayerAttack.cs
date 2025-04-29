@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -57,12 +55,12 @@ public class PlayerAttack : MonoBehaviour
         player.playerAnim.ResetTrigger("X");
     }
 
-    public void SetDamage(AnimationEvent myEvent)
+    public void SetDamage(AnimationEvent myEvent) // TODO: 애니메이션 특정 프레임에 설정된 값을 가져 옴
     {
         swordStat.damage = myEvent.intParameter;
     }
 
-    public void SetDownCount(AnimationEvent myEvent)
+    public void SetDownCount(AnimationEvent myEvent) // TODO: 애니메이션 특정 프레임에 설정된 값을 가져 옴
     {
         swordStat.downCount = myEvent.intParameter;
     }

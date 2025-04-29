@@ -49,6 +49,9 @@ public class DownState : IPlayerState
         yield return new WaitUntil(() => 
         player.playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Fall down_End"));
 
+        // 애니메이션이 끝날 떄 까지 기다림
+        yield return new WaitUntil(() =>
+        player.playerAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.78f);
 
         // ----> State Change
         if (player.agent.hasPath == true)
