@@ -125,6 +125,7 @@ public class MapMaker : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.P)) //설치모드 진입
         {
             placeMode = !placeMode;
@@ -143,7 +144,7 @@ public class MapMaker : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M)) //저장된 모든 타일 생성
         {
             MakeMap();
-        }
+        }*/
         if (placeMode)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow)) //타일 인덱스 이전
