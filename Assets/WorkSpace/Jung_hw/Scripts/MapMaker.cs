@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
@@ -56,8 +57,10 @@ public class MapMaker : MonoBehaviour
     [Header("Objects")]
     [SerializeField][Tooltip("바닥 타일")] GameObject baseObj;
     [SerializeField][Tooltip("시작점 Transform")] Transform startPos;
-    [SerializeField][Tooltip("설치할 타일들 프리팹")] List<GameObject> tiles;
-    [SerializeField][Tooltip("설치 미리보기용")] List<GameObject> placingTiles;
+    [SerializeField][Tooltip("타일 정보 ScriptableObject")] Placeables placeables;
+    [SerializeField][Tooltip("설치할 타일들 프리팹")] List<Placeables.Placeable> tiles;
+    Dictionary<string, int> tileNum;
+    List<GameObject> placingTiles; //설치 미리보기용
 
     [Header("Materials")]
     [SerializeField][Tooltip("설치가능할 때")] Material canPlaceMat;
@@ -82,9 +85,19 @@ public class MapMaker : MonoBehaviour
     RaycastHit hit;
     Vector3 placeRot = new Vector3(0, 15, 0); //회전간격
 
+    public int spawnLoc = 0;
+
     // Start is called before the first frame update
     void Awake()
     {
+        tiles = new(placeables.placeableList);
+        tileNum = new();
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            tileNum.Add(tiles[i].placeable.name, i);
+
+        }
+
         placingTiles = new List<GameObject>();
         tileList = new List<TileInfo>(hor * ver);
         for (int i = 0; i < tileList.Capacity; i++)
@@ -95,7 +108,7 @@ public class MapMaker : MonoBehaviour
         Debug.Log("ca " + tileList.Capacity);
         foreach (var tile in tiles) //미리보기용 타일 프리팹들 생성해놓기
         {
-            GameObject tempTile = (tile == null ? null : Instantiate(tile));
+            GameObject tempTile = (tile.placeable == null ? null : Instantiate(tile.placeable));
             if (tempTile != null)
             {
                 tempTile.SetActive(false);
@@ -192,12 +205,19 @@ public class MapMaker : MonoBehaviour
                 {
                     if (hit.transform.gameObject != null)
                     {
-                        GameObject placed = Instantiate(tiles[selected], hit.transform.GetChild(0));
-                        placed.transform.rotation = placingTiles[selected].transform.rotation;
-                        Debug.Log(hit.transform.name);
-                        if (int.TryParse(hit.transform.name, out int num))
+                        if (tiles[selected].stock > 0)
                         {
-                            tileList[num] = new TileInfo(selected + 1, placed.transform.eulerAngles);
+                            //구조체 리스트 내용 바꾸려면 새로 선언해야됨;;
+                            tiles[selected] = new Placeables.Placeable(tiles[selected].placeable, tiles[selected].stock - 1);
+
+                            GameObject placed = Instantiate(tiles[selected].placeable, hit.transform.GetChild(0));
+                            placed.name = tiles[selected].placeable.name;
+                            placed.transform.rotation = placingTiles[selected].transform.rotation;
+                            Debug.Log(hit.transform.name);
+                            if (int.TryParse(hit.transform.name, out int num))
+                            {
+                                tileList[num] = new TileInfo(selected + 1, placed.transform.eulerAngles);
+                            }
                         }
                     }
                 }
@@ -209,7 +229,7 @@ public class MapMaker : MonoBehaviour
 
             if (Input.GetMouseButtonDown(1)) //삭제 시도
             {
-                if (!canPlace)
+                if (!canPlace && hit.collider != null)
                 {
                     if (hit.transform.gameObject != null && hit.transform.GetChild(0).childCount > 0)
                     {
@@ -218,7 +238,11 @@ public class MapMaker : MonoBehaviour
                             Debug.Log(num + " " + tileList[num]);
                             tileList[num] = new TileInfo(0, Vector3.zero);
                         }
+                        string tileName = hit.transform.GetChild(0).GetChild(0).name;
+                        Debug.Log("TN " + tileName);
                         Destroy(hit.transform.GetChild(0).GetChild(0).gameObject);
+                        tiles[tileNum[tileName]] =
+                            new Placeables.Placeable(tiles[tileNum[tileName]].placeable, tiles[tileNum[tileName]].stock + 1);
                     }
                 }
             }
@@ -261,11 +285,17 @@ public class MapMaker : MonoBehaviour
         {
             if (tileList[i].tileId != 0)
             {
-                Instantiate(tiles[tileList[i].tileId - 1], startPos.transform.GetChild(i).GetChild(0)).transform.rotation = Quaternion.Euler(tileList[i].tileRot);
-                Vector3 height = new Vector3(0, fallHeight, 0);
-                if (startPos.GetChild(i).GetChild(0).childCount > 0)
+                if (tileList[i].tileId - 1 != placeables.spawnIndex)
                 {
-                    startPos.GetChild(i).GetChild(0).GetChild(0).transform.localPosition += height;
+                    GameObject placed = Instantiate(tiles[tileList[i].tileId - 1].placeable, startPos.transform.GetChild(i).GetChild(0));
+                    placed.transform.rotation = Quaternion.Euler(tileList[i].tileRot);
+                    placed.name = tiles[tileList[i].tileId - 1].placeable.name;
+
+                    Vector3 height = new Vector3(0, fallHeight, 0);
+                    if (startPos.GetChild(i).GetChild(0).childCount > 0)
+                    {
+                        startPos.GetChild(i).GetChild(0).GetChild(0).transform.localPosition += height;
+                    }
                 }
             }
         }
@@ -280,7 +310,16 @@ public class MapMaker : MonoBehaviour
         {
             if (tileList[i].tileId != 0)
             {
-                Instantiate(tiles[tileList[i].tileId - 1], startPos.transform.GetChild(i).GetChild(0)).transform.rotation = Quaternion.Euler(tileList[i].tileRot);
+                GameObject placed = Instantiate(tiles[tileList[i].tileId - 1].placeable, startPos.transform.GetChild(i).GetChild(0));
+                placed.transform.rotation = Quaternion.Euler(tileList[i].tileRot);
+                placed.name = tiles[selected].placeable.name;
+
+                tiles[tileList[i].tileId - 1] = new Placeables.Placeable(tiles[tileList[i].tileId - 1].placeable, tiles[tileList[i].tileId - 1].stock - 1);
+
+                if (tileList[i].tileId - 1 == placeables.spawnIndex)
+                {
+                    spawnLoc = i;
+                }
             }
         }
     }
@@ -327,7 +366,7 @@ public class MapMaker : MonoBehaviour
             }
             else
             {
-                tileList[i] = new TileInfo(tileNum, tiles[tileNum - 1].transform.eulerAngles + rot);
+                tileList[i] = new TileInfo(tileNum, tiles[tileNum - 1].placeable.transform.eulerAngles + rot);
             }
         }
     }
