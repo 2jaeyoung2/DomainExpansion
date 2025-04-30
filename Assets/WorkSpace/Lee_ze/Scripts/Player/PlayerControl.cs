@@ -31,7 +31,12 @@ public class PlayerControl : MonoBehaviourPun
 
     public GameObject[] swords;
 
-    public GameObject coffin;
+    [SerializeField]
+    private GameObject dashHitBox;
+
+    public GameObject tempDashHitBox;
+
+    public GameObject coffin; // 관짝
 
     
 
@@ -72,7 +77,9 @@ public class PlayerControl : MonoBehaviourPun
         // 여기에 ISkill[] 배열로 스킬 설정
         C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
 
-        D_SetSkill(new ManaBreak());
+        D_SetSkill(new SuperArmor());
+
+        SetDashHitBox();
     }
 
     private void Update()
@@ -199,6 +206,13 @@ public class PlayerControl : MonoBehaviourPun
         {
             skill[1].ActiveThisSkill(this);
         }
+    }
+
+    private void SetDashHitBox()
+    {
+        tempDashHitBox = Instantiate(dashHitBox, transform.position, transform.rotation);
+
+        tempDashHitBox.SetActive(false);
     }
 
     public void EndDash() // 애니메이션 특정 프레임에 이벤트성 호출
