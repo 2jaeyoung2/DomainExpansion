@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : MonoBehaviourPun
 {
     [SerializeField]
     private PlayerControl player;
@@ -13,6 +14,11 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnAttack_Z(InputAction.CallbackContext ctx)
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (ctx.phase == InputActionPhase.Started)
         {
             if (player.isDash == true) return;
@@ -29,6 +35,11 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnAttack_X(InputAction.CallbackContext ctx)
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (ctx.phase == InputActionPhase.Started)
         {
             if (player.isDash == true) return;

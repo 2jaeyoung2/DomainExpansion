@@ -1192,11 +1192,35 @@ MonoBehaviour:
     m_ActionId: c55ae157-bfb6-47ee-b454-554e241819fd
     m_ActionName: PlayerMoves/Attack_X[/Keyboard/x]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1841655271498463381}
+        m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
+        m_MethodName: On_C_Skill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 14ca9390-c872-4d25-9877-62b571a718fb
     m_ActionName: PlayerMoves/Skill_C[/Keyboard/c]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1841655271498463381}
+        m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
+        m_MethodName: On_D_Skill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 8287d1ae-0c62-4dfe-80e8-d147713d2b2c
     m_ActionName: PlayerMoves/Skill_D[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
