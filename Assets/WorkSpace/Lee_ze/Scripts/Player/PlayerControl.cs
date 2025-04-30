@@ -73,6 +73,8 @@ public class PlayerControl : MonoBehaviourPun
     {
         PlayerNavMeshAgentSettings();
 
+        mousePos = GameObject.Find("InputManager").GetComponent<MouseCursorPosition>();
+
         mousePos.OnDirectionChanged += GoToDestination;
 
         WeaponsOff();
