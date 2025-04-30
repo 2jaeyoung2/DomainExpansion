@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Unity.VisualScripting;
 
-public class PlayerStatistics : MonoBehaviour, IDamageable
+public class PlayerStatistics : MonoBehaviourPun, IDamageable
 {
     public event Action<float, float> OnHealthChanged; // 플레이어 체력 체크
 
@@ -91,6 +93,8 @@ public class PlayerStatistics : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        SetIsMine();
+
         PlayerMaxHP = 200; // TODO: 200쯤으로 설정하면 될 듯.
 
         PlayerCurrentHP = PlayerMaxHP;
@@ -107,6 +111,16 @@ public class PlayerStatistics : MonoBehaviour, IDamageable
         UpdateHealthBar();
 
         UpdateStaminaBar();
+    }
+
+    private void SetIsMine()
+    {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
+        GameObject.Find("Player UI").GetComponent<PlayerConditionUI>().SetMyPlayer(this);
     }
 
     public void GetDamage(int damage, int downCountStack)

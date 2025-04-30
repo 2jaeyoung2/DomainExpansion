@@ -120,11 +120,6 @@ public class PlayerControl : MonoBehaviourPun
 
     private void GoToDestination() // 마우스 우클릭 할 때 호출 됨(observer pattern 사용)
     {
-        if (photonView.IsMine == false)
-        {
-            return;
-        }
-
         if (isDash == true || isHit == true || isDead == true) // 구르기 중, 피격 시, 사망 시, 다운 시 이동 불가
         {
             return;
@@ -176,6 +171,11 @@ public class PlayerControl : MonoBehaviourPun
 
     public void OnStop(InputAction.CallbackContext ctx) // 'S' 바인딩
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (ctx.phase == InputActionPhase.Started)
         {
             agent.ResetPath();
@@ -198,6 +198,11 @@ public class PlayerControl : MonoBehaviourPun
 
     public void On_C_Skill(InputAction.CallbackContext ctx)
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (ctx.phase == InputActionPhase.Started)
         {
             if (isDash == true)
@@ -211,6 +216,11 @@ public class PlayerControl : MonoBehaviourPun
 
     public void On_D_Skill(InputAction.CallbackContext ctx)
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (ctx.phase == InputActionPhase.Started)
         {
             skill[1].ActiveThisSkill(this);

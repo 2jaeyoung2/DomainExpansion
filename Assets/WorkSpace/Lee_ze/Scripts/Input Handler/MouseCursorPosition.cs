@@ -61,6 +61,11 @@ public class MouseCursorPosition : MonoBehaviourPun
     // 마우스 커서 위치 가져오기. ※ hit.point로 커서 좌표 가져올 수 있음.
     private void GetMouseCursorPosition()
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         if (isRayOn == true)
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -83,6 +88,11 @@ public class MouseCursorPosition : MonoBehaviourPun
 
     public void TempGetMouseCursorPosition()
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, 100, floorLayerMask))

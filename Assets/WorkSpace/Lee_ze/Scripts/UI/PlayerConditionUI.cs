@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
-public class PlayerConditionUI : MonoBehaviour
+public class PlayerConditionUI : MonoBehaviourPun
 {
     [SerializeField]
     private PlayerStatistics playerStats;
@@ -26,6 +27,11 @@ public class PlayerConditionUI : MonoBehaviour
         playerStats.OnHealthChanged += UpdateHPbar;
 
         playerStats.OnStaminaChanged += UpdateStaminaBar;
+    }
+
+    public void SetMyPlayer(PlayerStatistics myPlayer)
+    {
+        playerStats = myPlayer;
     }
 
     private void UpdateHPbar(float currentHealth, float maxHealth)
