@@ -1161,22 +1161,6 @@ MonoBehaviour:
     m_ActionName: PlayerMoves/Stop[/Keyboard/s]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1841655271498463381}
-        m_TargetAssemblyTypeName: PlayerControl, Assembly-CSharp
-        m_MethodName: OnDash
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 4289be60-caa5-4e1a-905b-5af47b0131da
-    m_ActionName: PlayerMoves/Dash[/Keyboard/leftShift]
-  - m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 8629410781395484063}
         m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
         m_MethodName: OnAttack_Z
@@ -1209,8 +1193,12 @@ MonoBehaviour:
     m_ActionName: PlayerMoves/Attack_X[/Keyboard/x]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: f788d6ee-19d5-454f-a6d9-b92373ec9b48
-    m_ActionName: CameraView/ToPlayer[/Keyboard/space]
+    m_ActionId: 14ca9390-c872-4d25-9877-62b571a718fb
+    m_ActionName: PlayerMoves/Skill_C[/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8287d1ae-0c62-4dfe-80e8-d147713d2b2c
+    m_ActionName: PlayerMoves/Skill_D[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMoves
@@ -1309,11 +1297,18 @@ MonoBehaviour:
   swords:
   - {fileID: 8979441616405033169}
   - {fileID: 3955272309258614662}
+  dashHitBox: {fileID: 9094857698140054050, guid: 8d8cb8d5efe3fb843a56e2d7f3e0ae96, type: 3}
+  tempDashHitBox: {fileID: 0}
+  superArmorEffect: {fileID: 8983220011538577651, guid: 2ffe32fcaaed3ce4480d969ac9f095f1, type: 3}
+  tempSuperArmorEffect: {fileID: 0}
   coffin: {fileID: 5849270380118297940, guid: cea05b68df6840640a1b8a4bce69e7ab, type: 3}
   direction: {x: 0, y: 0, z: 0}
+  isDead: 0
+  isDown: 0
   isDash: 0
   isHit: 0
   dashCost: 1
+  manaBreakCost: 4
 --- !u!114 &1786914744408329392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1327,6 +1322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1841655271498463381}
+  playerCurrentHP: 0
 --- !u!114 &8629410781395484063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1422,6 +1418,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: StandUp
+  - Type: 9
+    SynchronizeType: 0
+    Name: Dead
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
