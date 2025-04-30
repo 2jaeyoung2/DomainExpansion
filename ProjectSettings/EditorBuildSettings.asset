@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/WorkSpace/Jung_hw/Scenes/OutGame/Lobby.unity
     guid: b097c1b611ba61f42bd2e52306e20124
   - enabled: 1
-    path: Assets/WorkSpace/Jung_hw/Scenes/InGame.unity
-    guid: b3908961ab3489b4292596790177305d
+    path: Assets/WorkSpace/Lee_ze/Scenes/DefaltMap.unity
+    guid: 1ab6344e9d4a2c24bb3ab4f1a845cfe3
   m_configObjects: {}
