@@ -31,7 +31,17 @@ public class PlayerControl : MonoBehaviourPun
 
     public GameObject[] swords;
 
-    public GameObject coffin;
+    [SerializeField]
+    private GameObject dashHitBox; // dash hitbox 프리팹 받는 용도
+
+    public GameObject tempDashHitBox; // dash hitbox 프리팹 instantiate 용도
+
+    [SerializeField]
+    private GameObject superArmorEffect;
+
+    public GameObject tempSuperArmorEffect;
+
+    public GameObject coffin; // 관짝
 
     
 
@@ -72,7 +82,11 @@ public class PlayerControl : MonoBehaviourPun
         // 여기에 ISkill[] 배열로 스킬 설정
         C_SetSkill(new Dash()); // 무슨 스킬 받아왔는지에 따라 new (스킬명)() 해줘야 함.
 
-        D_SetSkill(new ManaBreak());
+        D_SetSkill(new SuperArmor());
+
+        SetDashHitBox();
+
+        SetSuperArmorEffect();
     }
 
     private void Update()
@@ -201,7 +215,21 @@ public class PlayerControl : MonoBehaviourPun
         }
     }
 
-    public void EndDash() // 애니메이션 특정 프레임에 이벤트성 호출
+    private void SetSuperArmorEffect()
+    {
+        tempSuperArmorEffect = Instantiate(superArmorEffect);
+
+        tempSuperArmorEffect.SetActive(false);
+    }
+
+    private void SetDashHitBox() // 대쉬 히트박스 생성
+    {
+        tempDashHitBox = Instantiate(dashHitBox);
+
+        tempDashHitBox.SetActive(false);
+    }
+
+    public void EndDash() // 대쉬 종료. 애니메이션 특정 프레임에 이벤트성 호출
     {
         isDash = false;
     }

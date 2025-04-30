@@ -18,12 +18,13 @@ public class Dash : ISkill
 
         this.player.StartCoroutine(DashRoutine()); // Dash
 
+        this.player.StartCoroutine(ActivateDashHitBox());
+
         PayDashCost();
     }
 
     private IEnumerator DashRoutine()
     {
-
         player.playerCollider.enabled = false; // 구르기 시작할 때 콜라이더 끔.
 
         player.playerAnim.SetTrigger("IsDash"); // 구르기 애니메이션 시작.
@@ -53,6 +54,27 @@ public class Dash : ISkill
 
             yield return null;
         }
+    }
+
+    private IEnumerator ActivateDashHitBox()
+    {
+        Vector3 tempPosition = player.transform.position;
+
+        tempPosition.y = -20;
+
+        player.tempDashHitBox.transform.position = tempPosition;
+
+        player.tempDashHitBox.transform.rotation = player.transform.rotation;
+
+        player.tempDashHitBox.SetActive(true);
+
+        yield return new WaitUntil(() =>
+        player.playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Dash"));
+
+        yield return new WaitUntil(() =>
+        player.playerAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f);
+
+        player.tempDashHitBox.SetActive(false);
     }
 
     private void PayDashCost()
