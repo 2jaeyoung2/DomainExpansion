@@ -16,7 +16,22 @@ public class SuperArmor : ISkill
     {
         player.playerCollider.enabled = false;
 
-        yield return new WaitForSeconds(sustainingTime);
+        player.tempSuperArmorEffect.SetActive(true);
+
+        while (sustainingTime >= 0)
+        {
+            sustainingTime -= Time.deltaTime;
+
+            Vector3 tempPosition = player.transform.position;
+
+            tempPosition.y = player.transform.position.y + 1f;
+
+            player.tempSuperArmorEffect.transform.position = tempPosition;
+
+            yield return null;
+        }
+
+        player.tempSuperArmorEffect.SetActive(false);
 
         player.playerCollider.enabled = true;
     }
