@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 
-public class PlayerView : MonoBehaviourPun
+public class PlayerView : MonoBehaviour
 {
     [SerializeField]
     private Camera mainCamera;
@@ -33,15 +33,19 @@ public class PlayerView : MonoBehaviourPun
 
     private Coroutine moveCamHorizontalCor = null;
 
+    private void Start()
+    {
+        mainCamera = Camera.main;
+
+        playerPos = GameObject.Find("Player_Soldier(Clone)").transform;
+
+        Debug.Log(playerPos);
+    }
+
     #region 시점(카메라) 이동
 
     public void OnMouseMove(InputAction.CallbackContext ctx) // 마우스 포지션(움직임) 바인딩
     {
-        if (photonView.IsMine == false)
-        {
-            return;
-        }
-
         mousePos = ctx.ReadValue<Vector2>();
 
         // 만약 범위 안에 있으면 return;
@@ -137,11 +141,6 @@ public class PlayerView : MonoBehaviourPun
 
     public void OnToPlayer(InputAction.CallbackContext ctx) // 스페이스바 바인딩
     {
-        if (photonView.IsMine == false)
-        {
-            return;
-        }
-
         if (ctx.phase == InputActionPhase.Started)
         {
             CamToPlayer();

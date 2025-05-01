@@ -71,6 +71,22 @@ public class PlayerControl : MonoBehaviourPun
 
     private void Start()
     {
+        if (photonView.IsMine == false)
+        {
+            return;
+        }
+
+        mousePos = GameObject.Find("InputManager").GetComponent<MouseCursorPosition>();
+
+        gameObject.GetComponent<PlayerInput>().actionEvents[0].AddListener(mousePos.OnMouseRightButtonClick);
+
+        Debug.Log(gameObject.GetComponent<PlayerInput>().actionEvents.Count);
+
+        foreach (var a in gameObject.GetComponent<PlayerInput>().actionEvents)
+        {
+            Debug.Log(a.actionName);
+        }
+
         PlayerNavMeshAgentSettings();
 
         mousePos = GameObject.Find("InputManager").GetComponent<MouseCursorPosition>();

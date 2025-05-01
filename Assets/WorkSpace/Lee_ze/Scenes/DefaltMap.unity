@@ -1526,9 +1526,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1928293367}
   - component: {fileID: 1928293366}
-  - component: {fileID: 1928293368}
   - component: {fileID: 1928293365}
-  - component: {fileID: 1928293364}
+  - component: {fileID: 1928293368}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -1536,24 +1535,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1928293364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928293363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1c59e0cee3bf6d47bcad3566a50742f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 715565752}
-  playerPos: {fileID: 0}
-  cameraSpeed: 10
-  edgePixel: 10
-  xLimit: {x: -8.5, y: 18.5}
-  zLimit: {x: 7, y: 45}
 --- !u!114 &1928293365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1596,7 +1577,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1928293364}
+      - m_Target: {fileID: 1928293368}
         m_TargetAssemblyTypeName: PlayerView, Assembly-CSharp
         m_MethodName: OnToPlayer
         m_Mode: 0
@@ -1612,7 +1593,7 @@ MonoBehaviour:
     m_ActionName: View/ToPlayer[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1928293364}
+      - m_Target: {fileID: 1928293368}
         m_TargetAssemblyTypeName: PlayerView, Assembly-CSharp
         m_MethodName: OnMouseMove
         m_Mode: 0
@@ -1655,19 +1636,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1928293363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Script: {fileID: 11500000, guid: c1c59e0cee3bf6d47bcad3566a50742f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 2
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  mainCamera: {fileID: 0}
+  playerPos: {fileID: 0}
+  cameraSpeed: 10
+  edgePixel: 50
+  xLimit: {x: -12, y: 12}
+  zLimit: {x: 5, y: 45}
 --- !u!1 &2032235705
 GameObject:
   m_ObjectHideFlags: 0

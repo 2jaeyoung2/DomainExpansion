@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 
-public class MouseCursorPosition : MonoBehaviourPun
+public class MouseCursorPosition : MonoBehaviour
 {
     public event Action OnDirectionChanged;
 
@@ -38,14 +38,11 @@ public class MouseCursorPosition : MonoBehaviourPun
 
     public void OnMouseRightButtonClick(InputAction.CallbackContext ctx) // '마우스 우클릭' 바인딩
     {
-        if (photonView.IsMine == false)
-        {
-            return;
-        }
-
         if (ctx.phase == InputActionPhase.Started)
         {
             tempCursorPointer.SetActive(true);
+
+            Debug.Log("ON");
 
             isRayOn = true;
         }
@@ -54,6 +51,8 @@ public class MouseCursorPosition : MonoBehaviourPun
         {
             tempCursorPointer.SetActive(false);
 
+            Debug.Log("OFF");
+
             isRayOn = false;
         }
     }
@@ -61,11 +60,6 @@ public class MouseCursorPosition : MonoBehaviourPun
     // 마우스 커서 위치 가져오기. ※ hit.point로 커서 좌표 가져올 수 있음.
     private void GetMouseCursorPosition()
     {
-        if (photonView.IsMine == false)
-        {
-            return;
-        }
-
         if (isRayOn == true)
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -88,11 +82,6 @@ public class MouseCursorPosition : MonoBehaviourPun
 
     public void TempGetMouseCursorPosition()
     {
-        if (photonView.IsMine == false)
-        {
-            return;
-        }
-
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, 100, floorLayerMask))
